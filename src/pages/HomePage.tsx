@@ -12,7 +12,7 @@ const expertiseBlocks = [
 
 const selectedWorks = [
   { num: '01', title: 'Campfire Website', category: 'WEB APPLICATION', year: '2024', link: 'https://camp-client-mu.vercel.app/' },
-  { num: '02', title: 'Historical Blog Agent', category: 'AI AGENT', year: '2024', link: 'https://historical-news-blog-agent.vercel.app/politics' },
+  { num: '02', title: 'Historical Blog Agent', category: 'AI AGENT', year: '2024', link: 'https://historical-news-blog-agent.vercel.app/' },
   { num: '03', title: 'Musical Platform', category: 'WEB APPLICATION', year: '2024', link: 'https://music-client-brown.vercel.app/' },
 ]
 

@@ -21,7 +21,7 @@ const projects = [
     year: '2024',
     description: 'An AI-powered blog agent that curates and generates historical news content with intelligent context awareness.',
     image: '/ProjectThumbnailImage/HistoricalBlognewwebsiteThumbnail.png',
-    link: 'https://historical-news-blog-agent.vercel.app/politics',
+    link: 'https://historical-news-blog-agent.vercel.app/',
   },
   {
     title: 'Musical Platform',
