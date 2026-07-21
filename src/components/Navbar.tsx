@@ -95,7 +95,8 @@ export default function Navbar() {
             </NavLink>
           ))}
           <a
-            href="#"
+            href="https://raw.githubusercontent.com/soloStack-Dev/personal_resume/main/FaleelOptimizedResume.pdf"
+            download="FaleelOptimizedResume.pdf"
             style={{
               fontSize: '12px',
               fontWeight: 600,
@@ -114,7 +115,7 @@ export default function Navbar() {
             onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.85')}
             onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
           >
-            RESUME <span style={{ fontSize: '14px' }}>→</span>
+            RESUME <span style={{ fontSize: '14px' }}>↓</span>
           </a>
         </div>
 
@@ -201,7 +202,8 @@ export default function Navbar() {
             </NavLink>
           ))}
           <a
-            href="#"
+            href="https://raw.githubusercontent.com/soloStack-Dev/personal_resume/main/FaleelOptimizedResume.pdf"
+            download="FaleelOptimizedResume.pdf"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -219,7 +221,7 @@ export default function Navbar() {
             onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.85')}
             onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
           >
-            RESUME →
+            RESUME ↓
           </a>
         </div>
       )}
