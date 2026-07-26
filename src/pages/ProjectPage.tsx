@@ -12,7 +12,7 @@ const projects = [
     category: 'WEB APPLICATION',
     year: '2024',
     description: 'A modern web application built with cutting-edge technologies for seamless user experience and real-time interactions.',
-    image: '/ProjectThumbnailImage/campfirewebsiteThumbnail.png',
+    image: '/ProjectThumbnailImage/campReservation.png',
     link: 'https://camp-client-mu.vercel.app/',
   },
   {
@@ -20,7 +20,7 @@ const projects = [
     category: 'AI AGENT',
     year: '2024',
     description: 'An AI-powered blog agent that curates and generates historical news content with intelligent context awareness.',
-    image: '/ProjectThumbnailImage/HistoricalBlognewwebsiteThumbnail.png',
+    image: '/ProjectThumbnailImage/ChronicalArchive.png',
     link: 'https://historical-news-blog-agent.vercel.app/',
   },
   {
@@ -28,7 +28,7 @@ const projects = [
     category: 'WEB APPLICATION',
     year: '2024',
     description: 'A feature-rich musical platform delivering immersive audio experiences with modern web technologies.',
-    image: '/ProjectThumbnailImage/musicalwebsiteThumbnail.png',
+    image: '/ProjectThumbnailImage/MusicalInstrumentjoining.png',
     link: 'https://music-client-brown.vercel.app/',
   },
 ]
