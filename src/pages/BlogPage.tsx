@@ -33,6 +33,106 @@ const skills = [
   { name: 'MS Excel', image: '/skillsImage/MSExcel.jpg' },
 ]
 
+const roadmap = [
+  {
+    title: 'Frontend',
+    level: 'Beginner → Advanced',
+    items: [
+      { name: 'HTML & CSS', image: '/skillsImage/htmlandcss.jpg' },
+      { name: 'JavaScript', image: '/skillsImage/javascript.jpg' },
+      { name: 'React', image: '/skillsImage/react.jpg' },
+      { name: 'Tailwind CSS', image: '/skillsImage/TailwindCss.jpg' },
+      { name: 'TanStack Query', image: '/skillsImage/TanstackQuery.png' },
+      { name: 'TypeScript', image: '/skillsImage/typescript.jpg' },
+      { name: 'Zod', image: '/skillsImage/ZodTypeValidate.jpg' },
+    ],
+  },
+  {
+    title: 'Backend',
+    level: 'Beginner → Advanced',
+    items: [
+      { name: 'Hono', image: '/skillsImage/Hono.png' },
+      { name: 'Node.js', image: '/skillsImage/javascript.jpg' },
+      { name: 'TypeScript', image: '/skillsImage/typescript.jpg' },
+      { name: 'Zod', image: '/skillsImage/ZodTypeValidate.jpg' },
+      { name: 'JWT', note: 'Auth' },
+      { name: 'Auth', note: 'Security' },
+    ],
+  },
+  {
+    title: 'Database',
+    level: 'Relational & Non-Relational',
+    items: [
+      { name: 'MySQL', image: '/skillsImage/MySQL.jpg' },
+      { name: 'PostgreSQL', note: 'Advanced' },
+      { name: 'MongoDB', image: '/skillsImage/MongoDB.jpg' },
+      { name: 'Cassandra DB', note: 'Advanced' },
+      { name: 'Drizzle ORM', image: '/skillsImage/DrizzleORM.png', note: 'Studio' },
+    ],
+  },
+  {
+    title: 'Memory Cache',
+    level: 'Caching & Performance',
+    items: [
+      { name: 'Redis', note: 'Cache' },
+      { name: 'Upstash', note: 'Advanced' },
+    ],
+  },
+  {
+    title: 'Package Manager',
+    level: 'Frontend & Backend',
+    items: [
+      { name: 'npm', note: 'Frontend' },
+      { name: 'Bun', image: '/skillsImage/Bun.png', note: 'Backend' },
+    ],
+  },
+  {
+    title: 'Deployment',
+    level: 'Beginner → Advanced',
+    items: [
+      { name: 'Vercel', note: 'Beginner' },
+      { name: 'Orbiter', note: 'Advanced' },
+    ],
+  },
+  {
+    title: 'DevOps',
+    level: 'Beginner → Advanced',
+    items: [
+      { name: 'Docker', image: '/skillsImage/Docker.jpg', note: 'Beginner' },
+      { name: 'Kubernetes', note: 'Advanced' },
+    ],
+  },
+  {
+    title: 'CI / CD',
+    level: 'Version Control & Pipelines',
+    items: [
+      { name: 'Git & GitHub', image: '/skillsImage/GitandGitHub.jpg' },
+      { name: 'Pull Requests', note: 'AI Advanced' },
+      { name: 'GitLab', note: 'CI/CD' },
+    ],
+  },
+  {
+    title: 'LLMs',
+    level: 'AI & Machine Learning',
+    items: [
+      { name: 'LangChain JS', image: '/skillsImage/LangchainJS.jpg' },
+      { name: 'RAG', note: 'Architecture' },
+      { name: 'MCP', note: 'Protocol' },
+      { name: 'SLM', note: 'Small Models' },
+      { name: 'Rental GPU', note: 'Apps' },
+      { name: 'AI SDK', note: 'Vercel' },
+    ],
+  },
+  {
+    title: 'Design',
+    level: 'UI/UX & Prototyping',
+    items: [
+      { name: 'Stitch AI', note: 'Web Apps' },
+      { name: 'Figma', note: 'AI Design' },
+    ],
+  },
+]
+
 const articles = [
   { date: 'MAY 2024', title: 'Scaling Vector DBs with RAG Architecture', category: 'ARCHITECTURE' },
   { date: 'APR 2024', title: 'Why React is my choice for AI Frontends', category: 'FRONTEND' },
@@ -324,6 +424,197 @@ export default function BlogPage() {
         </div>
       </section>
 
+      {/* BHVR Stack Roadmap */}
+      <section style={{
+        padding: 'var(--space-xl) 0 var(--space-2xl)',
+      }}>
+        <div className="container">
+          <div style={{ marginBottom: 'var(--space-xl)' }}>
+            <span style={{
+              display: 'block',
+              fontSize: '11px',
+              fontWeight: 500,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: '#666',
+              marginBottom: '16px',
+            }}>
+              LEARNING PATH
+            </span>
+            <h2 style={{
+              fontSize: 'clamp(28px, 4vw, 48px)',
+              fontWeight: 800,
+              letterSpacing: '-0.02em',
+              textTransform: 'uppercase',
+              lineHeight: 1,
+            }}>
+              BHVR Stack<br />Roadmap
+            </h2>
+            <p style={{
+              fontSize: '14px',
+              color: 'var(--text-body)',
+              maxWidth: '480px',
+              marginTop: '16px',
+              lineHeight: 1.6,
+            }}>
+              From beginner to advanced — a structured path to becoming a full-stack developer.
+            </p>
+          </div>
+
+          <div className="roadmap-tree" style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '0',
+          }}>
+            {roadmap.map((section, sIdx) => (
+              <div
+                key={section.title}
+                className="roadmap-branch"
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '260px 1fr',
+                  gap: '0',
+                  position: 'relative',
+                }}
+              >
+                {/* Trunk line + title */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-end',
+                  paddingRight: '32px',
+                  position: 'relative',
+                }}>
+                  <div style={{
+                    position: 'absolute',
+                    right: '11px',
+                    top: 0,
+                    bottom: 0,
+                    width: '2px',
+                    background: sIdx === roadmap.length - 1 ? 'transparent' : '#222',
+                  }} />
+                  <div
+                    className="roadmap-node"
+                    style={{
+                      width: '24px',
+                      height: '24px',
+                      border: '2px solid #333',
+                      background: '#0a0a0a',
+                      position: 'absolute',
+                      right: '0',
+                      top: '24px',
+                      zIndex: 2,
+                      transition: 'all 0.3s ease',
+                      cursor: 'pointer',
+                    }}
+                  />
+                  <div style={{
+                    paddingTop: '16px',
+                    paddingBottom: '24px',
+                    textAlign: 'right',
+                  }}>
+                    <div style={{
+                      fontSize: '10px',
+                      fontWeight: 500,
+                      letterSpacing: '0.1em',
+                      textTransform: 'uppercase',
+                      color: '#555',
+                      marginBottom: '4px',
+                    }}>
+                      {String(sIdx + 1).padStart(2, '0')}
+                    </div>
+                    <div style={{
+                      fontSize: '18px',
+                      fontWeight: 700,
+                      letterSpacing: '-0.01em',
+                      textTransform: 'uppercase',
+                    }}>
+                      {section.title}
+                    </div>
+                    <div style={{
+                      fontSize: '11px',
+                      color: '#666',
+                      marginTop: '4px',
+                    }}>
+                      {section.level}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Skill items */}
+                <div style={{
+                  borderLeft: sIdx === roadmap.length - 1 ? 'none' : '1px solid #1a1a1a',
+                  paddingLeft: '32px',
+                  paddingBottom: '32px',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '12px',
+                  alignItems: 'flex-start',
+                  alignContent: 'flex-start',
+                }}>
+                  {section.items.map((item) => (
+                    <div
+                      key={item.name}
+                      className="roadmap-skill"
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        padding: '10px 14px',
+                        border: '1px solid #1a1a1a',
+                        background: '#0a0a0a',
+                        transition: 'all 0.3s ease',
+                        cursor: 'pointer',
+                        flex: '0 0 auto',
+                      }}
+                    >
+                      {item.image && (
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          loading="lazy"
+                          style={{
+                            width: '28px',
+                            height: '28px',
+                            objectFit: 'contain',
+                            filter: 'grayscale(100%) brightness(0.7)',
+                            transition: 'filter 0.3s ease',
+                          }}
+                        />
+                      )}
+                      <span style={{
+                        fontSize: '11px',
+                        fontWeight: 600,
+                        letterSpacing: '0.04em',
+                        color: 'var(--text-muted)',
+                        transition: 'color 0.3s ease',
+                        whiteSpace: 'nowrap',
+                      }}>
+                        {item.name}
+                      </span>
+                      {item.note && (
+                        <span style={{
+                          fontSize: '9px',
+                          color: '#444',
+                          border: '1px solid #222',
+                          padding: '2px 6px',
+                          letterSpacing: '0.05em',
+                          textTransform: 'uppercase',
+                          transition: 'all 0.3s ease',
+                          whiteSpace: 'nowrap',
+                        }}>
+                          {item.note}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Newsletter */}
       <section ref={newsletterRef} style={{
         padding: 'var(--space-xl) 0',
@@ -428,6 +719,50 @@ export default function BlogPage() {
           </div>
         </div>
       </section>
+
+      <style>{`
+        .roadmap-skill:hover {
+          border-color: #444 !important;
+          background: #111 !important;
+        }
+        .roadmap-skill:hover img {
+          filter: grayscale(0%) brightness(1) !important;
+        }
+        .roadmap-skill:hover span {
+          color: var(--text-primary) !important;
+        }
+        .roadmap-skill:hover span:last-child {
+          border-color: #444 !important;
+          color: #aaa !important;
+        }
+        .roadmap-node:hover {
+          border-color: var(--text-primary) !important;
+          background: var(--text-primary) !important;
+          box-shadow: 0 0 12px rgba(255,255,255,0.15);
+        }
+        @media (max-width: 768px) {
+          .roadmap-branch {
+            grid-template-columns: 1fr !important;
+          }
+          .roadmap-branch > div:first-child {
+            align-items: flex-start !important;
+            text-align: left !important;
+            padding-right: 0 !important;
+            padding-left: 32px !important;
+            margin-bottom: 12px;
+          }
+          .roadmap-branch > div:first-child > div:nth-child(1) {
+            display: none !important;
+          }
+          .roadmap-branch > div:first-child > div:nth-child(2) {
+            display: none !important;
+          }
+          .roadmap-branch > div:last-child {
+            border-left: none !important;
+            padding-left: 0 !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }
