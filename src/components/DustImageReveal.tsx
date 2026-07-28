@@ -1,10 +1,31 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 
 const IMAGES = [
   '/userImages/Faleel.jpeg',
   '/userImages/stackasserts/bhvrstack.png',
   '/userImages/stackasserts/Codemode.jpg',
   '/userImages/stackasserts/thought.jpg',
+  '/skillsImage/react.jpg',
+  '/skillsImage/typescript.jpg',
+  '/skillsImage/javascript.jpg',
+  '/skillsImage/htmlandcss.jpg',
+  '/skillsImage/TailwindCss.jpg',
+  '/skillsImage/Vite.png',
+  '/skillsImage/MaterialUI.jpg',
+  '/skillsImage/Zustand.png',
+  '/skillsImage/TanstackQuery.png',
+  '/skillsImage/ZodTypeValidate.jpg',
+  '/skillsImage/reactRouter.jpg',
+  '/skillsImage/LangchainJS.jpg',
+  '/skillsImage/MongoDB.jpg',
+  '/skillsImage/MySQL.jpg',
+  '/skillsImage/SQL.jpg',
+  '/skillsImage/MSExcel.jpg',
+  '/skillsImage/DrizzleORM.png',
+  '/skillsImage/Docker.jpg',
+  '/skillsImage/GitandGitHub.jpg',
+  '/skillsImage/Hono.png',
+  '/skillsImage/Bun.png',
 ]
 
 const PARTICLE_SIZE = 3
@@ -25,6 +46,9 @@ interface Particle {
   g: number
   b: number
   a: number
+  or: number
+  og: number
+  ob: number
 }
 
 function sampleImage(img: HTMLImageElement, canvasW: number, canvasH: number): Particle[] {
@@ -62,6 +86,9 @@ function sampleImage(img: HTMLImageElement, canvasW: number, canvasH: number): P
         g: bright,
         b: bright,
         a: Math.min(a, 220),
+        or: r,
+        og: g,
+        ob: b,
       })
     }
   }
@@ -76,6 +103,24 @@ export default function DustImageReveal() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [seqNum, setSeqNum] = useState(1)
+  const [active, setActive] = useState(false)
+  const activeRef = useRef(false)
+
+  const onEnter = useCallback(() => {
+    activeRef.current = true
+    setActive(true)
+    if (canvasRef.current) {
+      canvasRef.current.style.filter = 'contrast(1.1)'
+    }
+  }, [])
+
+  const onLeave = useCallback(() => {
+    activeRef.current = false
+    setActive(false)
+    if (canvasRef.current) {
+      canvasRef.current.style.filter = 'grayscale(100%) contrast(1.1)'
+    }
+  }, [])
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -91,6 +136,7 @@ export default function DustImageReveal() {
     let started = false
     let cW = 400
     let cH = 400
+    let skipFrame = false
 
     const resize = () => {
       const rect = container.getBoundingClientRect()
@@ -136,6 +182,16 @@ export default function DustImageReveal() {
       if (!started) {
         animId = requestAnimationFrame(tick)
         return
+      }
+
+      const isHovered = activeRef.current
+
+      if (isHovered) {
+        skipFrame = !skipFrame
+        if (skipFrame) {
+          animId = requestAnimationFrame(tick)
+          return
+        }
       }
 
       ctx.clearRect(0, 0, cW, cH)
@@ -189,7 +245,11 @@ export default function DustImageReveal() {
 
       for (const p of particles) {
         if (p.a < 5) continue
-        ctx.fillStyle = `rgba(${Math.round(p.r)},${Math.round(p.g)},${Math.round(p.b)},${p.a / 255})`
+        if (isHovered) {
+          ctx.fillStyle = `rgba(${p.or},${p.og},${p.ob},${p.a / 255})`
+        } else {
+          ctx.fillStyle = `rgba(${Math.round(p.r)},${Math.round(p.g)},${Math.round(p.b)},${p.a / 255})`
+        }
         ctx.fillRect(p.x - PARTICLE_SIZE / 2, p.y - PARTICLE_SIZE / 2, PARTICLE_SIZE, PARTICLE_SIZE)
       }
 
@@ -212,14 +272,20 @@ export default function DustImageReveal() {
   return (
     <div
       ref={containerRef}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
+      onTouchStart={onEnter}
+      onTouchEnd={onLeave}
       style={{
         width: '100%',
         maxWidth: '400px',
         aspectRatio: '1',
         position: 'relative',
-        border: '1px solid #1a1a1a',
+        border: active ? '1px solid #333' : '1px solid #1a1a1a',
         background: '#0a0a0a',
         overflow: 'hidden',
+        transition: 'border-color 0.6s ease',
+        cursor: 'pointer',
       }}
     >
       <canvas
@@ -229,6 +295,7 @@ export default function DustImageReveal() {
           height: '100%',
           display: 'block',
           filter: 'grayscale(100%) contrast(1.1)',
+          transition: 'filter 0.8s ease',
         }}
       />
       <span style={{
@@ -239,10 +306,11 @@ export default function DustImageReveal() {
         fontWeight: 500,
         letterSpacing: '0.08em',
         textTransform: 'uppercase',
-        color: '#444',
+        color: active ? '#888' : '#444',
         pointerEvents: 'none',
+        transition: 'color 0.6s ease',
       }}>
-        DUST_REVEAL // SEQUENCE_{String(seqNum).padStart(2, '0')}
+        {active ? 'LIVE_COLOR // ' : 'DUST_REVEAL // '}SEQUENCE_{String(seqNum).padStart(2, '0')}
       </span>
     </div>
   )
