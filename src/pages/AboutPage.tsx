@@ -1,4 +1,5 @@
 import { useStaggerChildren, useHeroAnimation } from '../hooks/useScrollAnimation'
+import DustImageReveal from '../components/DustImageReveal'
 
 const timeline = [
   {
@@ -193,58 +194,74 @@ export default function AboutPage() {
             </span>
           </div>
 
-          <div ref={timelineRef}>
-            {timeline.map((item) => (
-              <div
-                key={item.num}
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '2fr 3fr',
-                  gap: 'var(--space-lg)',
-                  padding: '32px 0',
-                  alignItems: 'start',
-                }}
-                className="timeline-row"
-              >
-                <div>
-                  <div style={{
-                    fontSize: '11px',
-                    color: '#666',
-                    marginBottom: '4px',
-                  }}>
-                    {item.num}
-                  </div>
-                  <div style={{
-                    fontSize: '11px',
-                    fontWeight: 500,
-                    letterSpacing: '0.08em',
-                    textTransform: 'uppercase',
-                    color: 'var(--text-muted)',
-                    marginBottom: '8px',
-                  }}>
-                    {item.role}
-                  </div>
-                  <div style={{
-                    fontSize: '22px',
-                    fontWeight: 700,
-                    letterSpacing: '-0.01em',
-                    lineHeight: 1.2,
-                  }}>
-                    {item.company}
-                  </div>
-                </div>
-                <div style={{
-                  fontSize: '14px',
-                  lineHeight: 1.6,
-                  color: 'var(--text-body)',
-                  maxWidth: '400px',
-                }}
-                className="timeline-desc"
+          <div className="timeline-layout" style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: 'var(--space-xl)',
+            alignItems: 'start',
+          }}>
+            <div ref={timelineRef}>
+              {timeline.map((item) => (
+                <div
+                  key={item.num}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '2fr 3fr',
+                    gap: 'var(--space-lg)',
+                    padding: '32px 0',
+                    alignItems: 'start',
+                  }}
+                  className="timeline-row"
                 >
-                  {item.description}
+                  <div>
+                    <div style={{
+                      fontSize: '11px',
+                      color: '#666',
+                      marginBottom: '4px',
+                    }}>
+                      {item.num}
+                    </div>
+                    <div style={{
+                      fontSize: '11px',
+                      fontWeight: 500,
+                      letterSpacing: '0.08em',
+                      textTransform: 'uppercase',
+                      color: 'var(--text-muted)',
+                      marginBottom: '8px',
+                    }}>
+                      {item.role}
+                    </div>
+                    <div style={{
+                      fontSize: '22px',
+                      fontWeight: 700,
+                      letterSpacing: '-0.01em',
+                      lineHeight: 1.2,
+                    }}>
+                      {item.company}
+                    </div>
+                  </div>
+                  <div style={{
+                    fontSize: '14px',
+                    lineHeight: 1.6,
+                    color: 'var(--text-body)',
+                    maxWidth: '400px',
+                  }}
+                  className="timeline-desc"
+                  >
+                    {item.description}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            <div style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              justifyContent: 'center',
+              paddingTop: '16px',
+            }}>
+              <DustImageReveal />
+            </div>
           </div>
         </div>
       </section>
@@ -255,6 +272,9 @@ export default function AboutPage() {
         }
         @media (max-width: 768px) {
           .about-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .timeline-layout {
             grid-template-columns: 1fr !important;
           }
           .timeline-row {
