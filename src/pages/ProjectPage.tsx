@@ -31,6 +31,14 @@ const projects = [
     image: '/ProjectThumbnailImage/MusicalInstrumentjoining.png',
     link: 'https://music-client-brown.vercel.app/',
   },
+  {
+    title: 'You Make it. You wear it',
+    category: 'STILL DEVELOPING',
+    year: '2026',
+    description: 'The Electric Canvas client is a full-featured t-shirt design studio built with modern React. Users can: Design t-shirts with text, images, and color overlays, drag & drop elements with rotation, flip, and alignment controls, generate AI product descriptions via OpenRouter/LangChain, browse the collection of community and AI-generated designs, cart & checkout flow with tax calculation.',
+    image: '/ProjectThumbnailImage/clothappimage.png',
+    link: 'https://cloth-client-eta.vercel.app/',
+  },
 ]
 
 function ProjectCard({ project }: { project: typeof projects[0] }) {
