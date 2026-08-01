@@ -39,6 +39,14 @@ const projects = [
     image: '/ProjectThumbnailImage/clothappimage.png',
     link: 'https://cloth-client-eta.vercel.app/',
   },
+  {
+    title: 'Wooden Artist',
+    category: 'WEB APPLICATION',
+    year: '2025',
+    description: 'Handcrafted Heritage — a vertical-scroll premium furniture website built with Next.js 16, GSAP scroll animations, TanStack Query data sync, and a warm editorial design system.',
+    image: '/ProjectThumbnailImage/woodenArtist.png',
+    link: 'https://wooden-artist.vercel.app/',
+  },
 ]
 
 function ProjectCard({ project }: { project: typeof projects[0] }) {
