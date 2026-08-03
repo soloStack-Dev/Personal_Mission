@@ -240,8 +240,8 @@ export default function HomePage() {
               }}
             >
               I craft high-performance web applications and integrate AI solutions
-              that push the boundaries of what's possible. From full-stack architecture
-              to intelligent automation.
+              that push the boundaries of what's possible. This portfolio spans
+              full-stack architecture, AI integration, and intelligent automation.
             </p>
 
             {/* Primary + secondary call-to-action */}

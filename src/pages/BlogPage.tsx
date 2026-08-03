@@ -5,7 +5,10 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { z } from 'zod'
 import { useScrollFadeIn, useStaggerChildren, useHeroAnimation } from '../hooks/useScrollAnimation'
 
-gsap.registerPlugin(ScrollTrigger)
+// Only register ScrollTrigger in the browser (see useScrollAnimation.ts)
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 /** Email validation used by the newsletter form. */
 const emailSchema = z.string().email('Please enter a valid email address')

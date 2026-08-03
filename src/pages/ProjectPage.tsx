@@ -4,7 +4,10 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useHeroAnimation, useStaggerChildren, useScrollFadeIn } from '../hooks/useScrollAnimation'
 
-gsap.registerPlugin(ScrollTrigger)
+// Only register ScrollTrigger in the browser (see useScrollAnimation.ts)
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 /** Portfolio projects, each linking to its live site. */
 const projects = [

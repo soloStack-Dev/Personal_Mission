@@ -2,7 +2,11 @@ import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger)
+// Only register ScrollTrigger in the browser — during server-side
+// prerendering there is no DOM, and the plugin must not initialize.
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 /**
  * Shared scroll-animation helpers used by every page.
