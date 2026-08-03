@@ -231,8 +231,8 @@ export default function ProjectPage() {
               textTransform: 'uppercase',
             }}
           >
-            <span className="word" style={{ display: 'block' }}>Selected</span>
-            <span className="word" style={{ display: 'block' }}>Works</span>
+            <span className="word" style={{ display: 'block' }}>{'Selected '}</span>
+            <span className="word" style={{ display: 'block' }}>{'Works'}</span>
           </h1>
 
           <p

@@ -224,25 +224,33 @@ export default function HomePage() {
                 marginBottom: 'var(--space-md)',
               }}
             >
-              <span className="word" style={{ display: 'block' }}>Building the</span>
-              <span className="word" style={{ display: 'block' }}>Future with</span>
-              <span className="word" style={{ display: 'block' }}>Code & AI</span>
+              <span className="word" style={{ display: 'block' }}>{'Building the '}</span>
+              <span className="word" style={{ display: 'block' }}>{'Future with '}</span>
+              <span className="word" style={{ display: 'block' }}>{'Code & AI'}</span>
             </h1>
 
-            <p
+            <div
               data-hero-sub
-              style={{
-                fontSize: '16px',
-                lineHeight: 1.6,
-                color: 'var(--text-muted)',
-                maxWidth: '480px',
-                marginBottom: 'var(--space-md)',
-              }}
+              style={{ maxWidth: '480px', marginBottom: 'var(--space-md)' }}
             >
-              I craft high-performance web applications and integrate AI solutions
-              that push the boundaries of what's possible. This portfolio spans
-              full-stack architecture, AI integration, and intelligent automation.
-            </p>
+              <p style={{ fontSize: '16px', lineHeight: 1.6, color: 'var(--text-muted)', marginBottom: '12px' }}>
+                I'm a full stack developer building the future of the web with code,
+                AI, and an obsession with performance. From database schema and robust
+                APIs to pixel-perfect interfaces, I design and ship high-performance
+                web applications end to end.
+              </p>
+              <p style={{ fontSize: '16px', lineHeight: 1.6, color: 'var(--text-muted)', marginBottom: '12px' }}>
+                Every project here starts from one question: how can technology solve
+                this problem better? I embed AI models into production systems, engineer
+                precise prompts and context windows, and design automation workflows
+                that give businesses a real edge.
+              </p>
+              <p style={{ fontSize: '16px', lineHeight: 1.6, color: 'var(--text-muted)', marginBottom: 0 }}>
+                Browse the selected work below to see these ideas in action, or get in
+                touch if you want to build something exceptional together. New projects,
+                experiments and open-source tools are published here regularly.
+              </p>
+            </div>
 
             {/* Primary + secondary call-to-action */}
             <div data-hero-buttons style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
@@ -422,7 +430,9 @@ export default function HomePage() {
             </h2>
             <p style={{ fontSize: '14px', lineHeight: 1.6, color: 'var(--text-muted)' }}>
               I'm available for freelance projects and full-time opportunities.
-              Let's build something exceptional.
+              Let's build something exceptional. Send me a message or subscribe for
+              updates on new work, experiments with AI, and behind-the-scenes notes
+              on building this portfolio.
             </p>
           </div>
 

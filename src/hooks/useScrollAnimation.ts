@@ -39,6 +39,9 @@ export function useScrollFadeIn<T extends HTMLElement = HTMLDivElement>(options?
     const el = ref.current
     if (!el) return
 
+    // Respect reduced motion: never hide content for those users
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
     // Animate explicit [data-animate] children if present, otherwise the wrapper itself
     const children = el.querySelectorAll<HTMLElement>('[data-animate]')
     const targets = children.length > 0 ? Array.from(children) : [el]
@@ -46,26 +49,39 @@ export function useScrollFadeIn<T extends HTMLElement = HTMLDivElement>(options?
     // 1. Start hidden (transparent + shifted down)
     gsap.set(targets, { opacity: 0, y: options?.y ?? 30 })
 
+    let revealed = false
+    const reveal = () => {
+      if (revealed) return
+      revealed = true
+      gsap.to(targets, {
+        opacity: 1,
+        y: 0,
+        duration: options?.duration ?? 0.6,
+        ease: 'power2.out',
+        stagger: options?.stagger ?? 0.1,
+        delay: options?.delay ?? 0,
+      })
+    }
+
     // 2. Reveal once when the element reaches 85% down the viewport
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: el,
         start: 'top 85%',
         once: true,
-        onEnter: () => {
-          gsap.to(targets, {
-            opacity: 1,
-            y: 0,
-            duration: options?.duration ?? 0.6,
-            ease: 'power2.out',
-            stagger: options?.stagger ?? 0.1,
-            delay: options?.delay ?? 0,
-          })
-        },
+        onEnter: reveal,
       })
     }, el)
 
-    return () => ctx.revert()
+    // 3. Safety net: reveal shortly after load even if the section is never
+    //    scrolled into view (crawlers don't scroll). Keeps all content
+    //    visible in search-engine snapshots.
+    const timer = window.setTimeout(reveal, 600)
+
+    return () => {
+      window.clearTimeout(timer)
+      ctx.revert()
+    }
   }, [options?.delay, options?.duration, options?.y, options?.stagger])
 
   return ref
@@ -81,6 +97,9 @@ export function useStaggerChildren<T extends HTMLElement = HTMLDivElement>() {
   useEffect(() => {
     const el = ref.current
     if (!el) return
+
+    // Respect reduced motion: never hide content for those users
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     // The direct children are the "cards" we want to cascade in
     const children = Array.from(el.children) as HTMLElement[]
@@ -127,6 +146,9 @@ export function useHeroAnimation<T extends HTMLElement = HTMLDivElement>() {
   useEffect(() => {
     const el = ref.current
     if (!el) return
+
+    // Respect reduced motion: never hide content for those users
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     // Grab every animated piece inside the hero section
     const image = el.querySelector<HTMLElement>('[data-hero-image]')

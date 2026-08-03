@@ -476,9 +476,9 @@ export default function BlogPage() {
               marginBottom: 'var(--space-md)',
             }}
           >
-            <span className="word" style={{ display: 'block' }}>Skills</span>
-            <span className="word" style={{ display: 'block' }}>&</span>
-            <span className="word" style={{ display: 'block' }}>Insights</span>
+            <span className="word" style={{ display: 'block' }}>{'Skills '}</span>
+            <span className="word" style={{ display: 'block' }}>{'& '}</span>
+            <span className="word" style={{ display: 'block' }}>{'Insights'}</span>
           </h1>
 
           <div

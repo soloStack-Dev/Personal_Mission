@@ -13,7 +13,7 @@ function getSocialLinks(openContactModal: () => void) {
   return [
     { label: 'LinkedIn', href: 'https://www.linkedin.com/in/faleel-h-b772a1416/', target: '_blank' },
     { label: 'GitHub', href: 'https://github.com/soloStack-Dev', target: '_blank' },
-    { label: 'Twitter', href: '#', target: '' },
+    { label: 'Instagram', href: 'https://www.instagram.com/byte_foundry__?igsh=Y2w5YXQzOW44aDIz', target: '_blank' },
     { label: 'Email', href: '#', target: '', onClick: openContactModal },
   ]
 }
@@ -76,7 +76,10 @@ export default function Footer({ variant = 'home' }: FooterProps) {
           <Brand />
           <Copyright />
         </div>
-        <SocialLinks />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '24px' }}>
+          <SocialLinks />
+          <ShareLinks />
+        </div>
       </div>
     </footer>
   )
@@ -155,6 +158,83 @@ function SocialLinks() {
           {link.label}
         </a>
       ))}
+    </div>
+  )
+}
+
+/**
+ * Social share buttons — let visitors share the current page on X,
+ * LinkedIn or Facebook. The href is static (hydration-safe); the
+ * real, current URL is injected when the link is clicked.
+ */
+function ShareLinks() {
+  const shareBaseUrl = 'https://personal-mission-mu.vercel.app/'
+  const shareText = 'Byte_Foundry__ — Building the Future with Code & AI'
+  const links = [
+    {
+      label: 'X',
+      href: `https://twitter.com/intent/tweet?url=${encodeURIComponent(shareBaseUrl)}&text=${encodeURIComponent(shareText)}`,
+      build: (url: string) =>
+        `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(shareText)}`,
+    },
+    {
+      label: 'LinkedIn',
+      href: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareBaseUrl)}`,
+      build: (url: string) => `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+    },
+    {
+      label: 'Facebook',
+      href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareBaseUrl)}`,
+      build: (url: string) => `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+    },
+  ]
+
+  return (
+    <div style={{ textAlign: 'right' }}>
+      <div
+        style={{
+          fontSize: '11px',
+          fontWeight: 500,
+          letterSpacing: '0.1em',
+          color: 'var(--text-muted-dark)',
+          textTransform: 'uppercase',
+          marginBottom: '12px',
+        }}
+      >
+        Share this page
+      </div>
+      <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', justifyContent: 'flex-end' }}>
+        {links.map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => {
+              e.preventDefault()
+              const current = typeof window !== 'undefined' ? window.location.href : shareBaseUrl
+              window.open(link.build(current), '_blank', 'noopener,noreferrer')
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = 'var(--text-primary)'
+              e.currentTarget.style.textDecoration = 'underline'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = 'var(--text-body)'
+              e.currentTarget.style.textDecoration = 'none'
+            }}
+            style={{
+              fontSize: '13px',
+              color: 'var(--text-body)',
+              textDecoration: 'none',
+              transition: 'color 0.2s ease',
+              cursor: 'pointer',
+            }}
+          >
+            {link.label}
+          </a>
+        ))}
+      </div>
     </div>
   )
 }
