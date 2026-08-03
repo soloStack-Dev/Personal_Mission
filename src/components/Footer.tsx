@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 import { useStore } from '../store/useStore'
 
 interface FooterProps {
@@ -76,6 +76,7 @@ export default function Footer({ variant = 'home' }: FooterProps) {
           <Brand />
           <Copyright />
         </div>
+        <ExploreLinks />
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '24px' }}>
           <SocialLinks />
           <ShareLinks />
@@ -115,6 +116,43 @@ function Copyright() {
       }}
     >
       © 2024 BYTE_FOUNDRY__. ALL RIGHTS RESERVED.
+    </div>
+  )
+}
+
+/** Internal navigation links — helps SEO with more on-page internal links. */
+function ExploreLinks() {
+  const links = [
+    { label: 'Home', to: '/' },
+    { label: 'About', to: '/about' },
+    { label: 'Projects', to: '/projects' },
+    { label: 'Skills & Insights', to: '/blog' },
+  ]
+  return (
+    <div>
+      <div
+        style={{
+          fontSize: '11px',
+          fontWeight: 500,
+          letterSpacing: '0.1em',
+          color: 'var(--text-muted-dark)',
+          textTransform: 'uppercase',
+          marginBottom: '12px',
+        }}
+      >
+        Explore
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        {links.map((link) => (
+          <Link
+            key={link.to}
+            to={link.to}
+            style={{ fontSize: '13px', color: 'var(--text-body)', textDecoration: 'none' }}
+          >
+            {link.label}
+          </Link>
+        ))}
+      </div>
     </div>
   )
 }

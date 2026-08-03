@@ -13,9 +13,33 @@ const expertiseBlocks = [
 
 /** Three featured projects, each linking out to its live site. */
 const selectedWorks = [
-  { num: '01', title: 'Campfire Website', category: 'WEB APPLICATION', year: '2024', link: 'https://camp-client-mu.vercel.app/' },
-  { num: '02', title: 'Historical Blog Agent', category: 'AI AGENT', year: '2024', link: 'https://historical-news-blog-agent.vercel.app/' },
-  { num: '03', title: 'Musical Platform', category: 'WEB APPLICATION', year: '2024', link: 'https://music-client-brown.vercel.app/' },
+  {
+    num: '01',
+    title: 'Campfire Website',
+    category: 'WEB APPLICATION',
+    year: '2024',
+    link: 'https://camp-client-mu.vercel.app/',
+    description:
+      'Full-stack web application with SQL persistence, real-time features and a responsive React interface.',
+  },
+  {
+    num: '02',
+    title: 'Historical Blog Agent',
+    category: 'AI AGENT',
+    year: '2024',
+    link: 'https://historical-news-blog-agent.vercel.app/',
+    description:
+      'Autonomous AI agent that researches historical events and publishes blog posts using large language models.',
+  },
+  {
+    num: '03',
+    title: 'Musical Platform',
+    category: 'WEB APPLICATION',
+    year: '2024',
+    link: 'https://music-client-brown.vercel.app/',
+    description:
+      'Music streaming platform with playlist management, audio playback and a modern React interface.',
+  },
 ]
 
 /**
@@ -224,6 +248,21 @@ export default function HomePage() {
                 marginBottom: 'var(--space-md)',
               }}
             >
+              <span
+                className="word"
+                style={{
+                  display: 'block',
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  letterSpacing: '0.28em',
+                  textTransform: 'uppercase',
+                  color: 'var(--text-muted)',
+                  marginBottom: '20px',
+                  lineHeight: 1.4,
+                }}
+              >
+                {'Byte_Foundry__ — Portfolio '}
+              </span>
               <span className="word" style={{ display: 'block' }}>{'Building the '}</span>
               <span className="word" style={{ display: 'block' }}>{'Future with '}</span>
               <span className="word" style={{ display: 'block' }}>{'Code & AI'}</span>
@@ -244,6 +283,12 @@ export default function HomePage() {
                 this problem better? I embed AI models into production systems, engineer
                 precise prompts and context windows, and design automation workflows
                 that give businesses a real edge.
+              </p>
+              <p style={{ fontSize: '16px', lineHeight: 1.6, color: 'var(--text-muted)', marginBottom: '12px' }}>
+                This portfolio is built with React, TypeScript, Node.js, Tailwind CSS and
+                Docker — backed by PostgreSQL, MongoDB, MySQL, TanStack Query, Zustand and
+                OpenAI APIs. Clean data modeling, RESTful APIs, responsive design and
+                production deployments come standard.
               </p>
               <p style={{ fontSize: '16px', lineHeight: 1.6, color: 'var(--text-muted)', marginBottom: 0 }}>
                 Browse the selected work below to see these ideas in action, or get in
@@ -384,6 +429,21 @@ export default function HomePage() {
                   }}
                 >
                   {work.title}
+                  <span
+                    style={{
+                      display: 'block',
+                      fontSize: '13px',
+                      fontWeight: 400,
+                      lineHeight: 1.5,
+                      color: 'var(--text-muted)',
+                      marginTop: '6px',
+                      letterSpacing: '0.01em',
+                      textTransform: 'none',
+                      maxWidth: '520px',
+                    }}
+                  >
+                    {work.description}
+                  </span>
                 </span>
                 <span
                   style={{
@@ -401,6 +461,25 @@ export default function HomePage() {
               </a>
             ))}
           </div>
+
+          {/* Link to the full projects page */}
+          <Link
+            to="/projects"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              marginTop: 'var(--space-lg)',
+              fontSize: '12px',
+              fontWeight: 600,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: 'var(--text-primary)',
+              textDecoration: 'underline',
+              textUnderlineOffset: '4px',
+            }}
+          >
+            View all projects →
+          </Link>
         </div>
       </section>
 
@@ -434,6 +513,23 @@ export default function HomePage() {
               updates on new work, experiments with AI, and behind-the-scenes notes
               on building this portfolio.
             </p>
+            <Link
+              to="/blog"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                marginTop: '12px',
+                fontSize: '12px',
+                fontWeight: 600,
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                color: 'var(--text-primary)',
+                textDecoration: 'underline',
+                textUnderlineOffset: '4px',
+              }}
+            >
+              Browse skills & insights →
+            </Link>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
