@@ -1,32 +1,35 @@
 import { useStaggerChildren, useHeroAnimation } from '../hooks/useScrollAnimation'
 import DustImageReveal from '../components/DustImageReveal'
 
-/** Career timeline entries (most recent first). */
-const timeline = [
+/** Background highlights — current status, open roles and coding philosophy. */
+const background = [
   {
     num: '01',
-    role: 'Tech Lead',
-    company: 'Neural Architects',
-    description: 'Leading the integration of LLM-powered features into enterprise applications, architecting scalable AI pipelines.',
+    label: 'CURRENT STATUS',
+    title: 'Fresher — Bachelor\u2019s Degree',
+    description:
+      'I\u2019m a fresher currently completing my bachelor\u2019s degree, looking for my first opportunity as a Full Stack Developer, Backend Developer, React Developer, or Software Engineer.',
   },
   {
     num: '02',
-    role: 'Backend Engineer',
-    company: 'CloudScale Dynamics',
-    description: 'Designed and maintained distributed database systems serving millions of requests with sub-millisecond latency.',
+    label: 'OPEN TO ROLES',
+    title: 'Full Stack \u00B7 Backend \u00B7 React',
+    description:
+      'Seeking a junior role where I can contribute clean code, keep learning fast, and grow into a dependable software engineer.',
   },
   {
     num: '03',
-    role: 'Software Architect',
-    company: 'Studio Minimal',
-    description: 'Consulting on minimalist software design, building clean architectures that prioritize developer experience.',
+    label: 'CODING PHILOSOPHY',
+    title: 'Simple \u00B7 Clean \u00B7 Explained',
+    description:
+      'I write simple code logic that is easy to understand — clean, readable code with clear comments that explain the logic behind every decision.',
   },
 ]
 
-/** AboutPage — philosophy intro + career timeline + dust reveal canvas. */
+/** AboutPage — philosophy intro + background info + dust reveal canvas. */
 export default function AboutPage() {
   const heroRef = useHeroAnimation()
-  const timelineRef = useStaggerChildren<HTMLDivElement>()
+  const backgroundRef = useStaggerChildren<HTMLDivElement>()
 
   return (
     <div style={{ background: '#0a0a0a' }}>
@@ -183,7 +186,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Timeline Section — career history + animated image canvas */}
+      {/* Background Section — fresher status + coding philosophy + animated image canvas */}
       <section style={{ padding: 'var(--space-xl) 0 var(--space-2xl)' }}>
         <div className="container">
           <div
@@ -202,7 +205,7 @@ export default function AboutPage() {
                 textTransform: 'uppercase',
               }}
             >
-              Timeline
+              Background
             </h2>
             <span
               style={{
@@ -213,11 +216,11 @@ export default function AboutPage() {
                 textTransform: 'uppercase',
               }}
             >
-              2018 — PRESENT
+              NOW · FRESHER
             </span>
           </div>
 
-          {/* Two columns: the timeline rows + the dust-reveal canvas */}
+          {/* Two columns: the info rows + the dust-reveal canvas */}
           <div
             className="timeline-layout"
             style={{
@@ -228,8 +231,8 @@ export default function AboutPage() {
             }}
           >
             {/* Each row animates in as a staggered child */}
-            <div ref={timelineRef}>
-              {timeline.map((item) => (
+            <div ref={backgroundRef}>
+              {background.map((item) => (
                 <div
                   key={item.num}
                   className="timeline-row"
@@ -241,7 +244,7 @@ export default function AboutPage() {
                     alignItems: 'start',
                   }}
                 >
-                  {/* Left: number + role + company */}
+                  {/* Left: number + label + title */}
                   <div>
                     <div style={{ fontSize: '11px', color: '#666', marginBottom: '4px' }}>{item.num}</div>
                     <div
@@ -254,7 +257,7 @@ export default function AboutPage() {
                         marginBottom: '8px',
                       }}
                     >
-                      {item.role}
+                      {item.label}
                     </div>
                     <div
                       style={{
@@ -264,7 +267,7 @@ export default function AboutPage() {
                         lineHeight: 1.2,
                       }}
                     >
-                      {item.company}
+                      {item.title}
                     </div>
                   </div>
 
