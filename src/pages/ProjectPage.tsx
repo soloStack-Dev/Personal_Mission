@@ -6,6 +6,7 @@ import { useHeroAnimation, useStaggerChildren, useScrollFadeIn } from '../hooks/
 
 gsap.registerPlugin(ScrollTrigger)
 
+/** Portfolio projects, each linking to its live site. */
 const projects = [
   {
     title: 'Campfire Website',
@@ -49,6 +50,14 @@ const projects = [
   },
 ]
 
+/**
+ * ProjectCard — one project tile.
+ *
+ * Hover behavior:
+ * - the thumbnail loses its grayscale filter and zooms in slightly,
+ * - a "PREVIEW" button fades in over the image.
+ * All animation is done with GSAP tweens bound via event listeners.
+ */
 function ProjectCard({ project }: { project: typeof projects[0] }) {
   const cardRef = useRef<HTMLDivElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
@@ -60,19 +69,17 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
     const preview = previewRef.current
     if (!card || !img) return
 
+    // Mouse entered: colorize + zoom the image, show the PREVIEW overlay
     const handleEnter = () => {
       gsap.to(img, { filter: 'grayscale(0%) brightness(1)', duration: 0.5, ease: 'power2.out' })
       gsap.to(img, { scale: 1.03, duration: 0.3, ease: 'power2.out' })
-      if (preview) {
-        gsap.to(preview, { opacity: 1, duration: 0.3, ease: 'power2.out' })
-      }
+      if (preview) gsap.to(preview, { opacity: 1, duration: 0.3, ease: 'power2.out' })
     }
+    // Mouse left: back to grayscale, resting zoom, hide the overlay
     const handleLeave = () => {
       gsap.to(img, { filter: 'grayscale(100%) brightness(0.7)', duration: 0.5, ease: 'power2.out' })
       gsap.to(img, { scale: 1, duration: 0.3, ease: 'power2.out' })
-      if (preview) {
-        gsap.to(preview, { opacity: 0, duration: 0.3, ease: 'power2.out' })
-      }
+      if (preview) gsap.to(preview, { opacity: 0, duration: 0.3, ease: 'power2.out' })
     }
 
     card.addEventListener('mouseenter', handleEnter)
@@ -84,19 +91,9 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
   }, [])
 
   return (
-    <div
-      ref={cardRef}
-      data-animate
-      style={{
-        cursor: 'pointer',
-      }}
-    >
-      <div style={{
-        position: 'relative',
-        overflow: 'hidden',
-        aspectRatio: '16/10',
-        marginBottom: '24px',
-      }}>
+    <div ref={cardRef} data-animate style={{ cursor: 'pointer' }}>
+      {/* Thumbnail with hover overlay */}
+      <div style={{ position: 'relative', overflow: 'hidden', aspectRatio: '16/10', marginBottom: '24px' }}>
         <img
           ref={imgRef}
           src={project.image}
@@ -111,7 +108,7 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
           }}
         />
 
-        {/* Preview Button Overlay */}
+        {/* PREVIEW button overlay (fades in on hover) */}
         <div
           ref={previewRef}
           style={{
@@ -130,6 +127,8 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
             target="_blank"
             rel="noopener noreferrer"
             onClick={(e) => e.stopPropagation()}
+            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.85')}
+            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
             style={{
               padding: '12px 28px',
               background: 'var(--text-primary)',
@@ -141,49 +140,52 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
               textDecoration: 'none',
               transition: 'opacity 0.2s ease',
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.85')}
-            onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
           >
             PREVIEW
           </a>
         </div>
       </div>
 
-      <div style={{
-        fontSize: '11px',
-        fontWeight: 500,
-        letterSpacing: '0.08em',
-        textTransform: 'uppercase',
-        color: 'var(--text-muted-dark)',
-        marginBottom: '8px',
-      }}>
+      {/* Category / year */}
+      <div
+        style={{
+          fontSize: '11px',
+          fontWeight: 500,
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          color: 'var(--text-muted-dark)',
+          marginBottom: '8px',
+        }}
+      >
         {project.category} / {project.year}
       </div>
 
-      <h3 style={{
-        fontSize: 'clamp(22px, 2.5vw, 28px)',
-        fontWeight: 700,
-        textTransform: 'uppercase',
-        letterSpacing: '0',
-        marginBottom: '12px',
-        lineHeight: 1.1,
-      }}>
+      {/* Title */}
+      <h3
+        style={{
+          fontSize: 'clamp(22px, 2.5vw, 28px)',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          letterSpacing: '0',
+          marginBottom: '12px',
+          lineHeight: 1.1,
+        }}
+      >
         {project.title}
       </h3>
 
-      <p style={{
-        fontSize: '14px',
-        lineHeight: 1.6,
-        color: 'var(--text-body)',
-        marginBottom: '16px',
-      }}>
+      {/* Description */}
+      <p style={{ fontSize: '14px', lineHeight: 1.6, color: 'var(--text-body)', marginBottom: '16px' }}>
         {project.description}
       </p>
 
+      {/* "View case study" link — border lights up on hover */}
       <a
         href={project.link}
         target="_blank"
         rel="noopener noreferrer"
+        onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--text-primary)')}
+        onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-hover)')}
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -198,12 +200,6 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
           textDecoration: 'none',
           transition: 'border-color 0.2s ease, color 0.2s ease',
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.borderColor = 'var(--text-primary)'
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.borderColor = 'var(--border-hover)'
-        }}
       >
         VIEW CASE STUDY
       </a>
@@ -211,6 +207,7 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
   )
 }
 
+/** ProjectPage — hero, project grid, and a closing call-to-action. */
 export default function ProjectPage() {
   const heroRef = useHeroAnimation()
   const projectsRef = useStaggerChildren<HTMLDivElement>()
@@ -219,44 +216,46 @@ export default function ProjectPage() {
   return (
     <div style={{ background: '#0a0a0a' }}>
       {/* Hero Section */}
-      <section ref={heroRef} style={{
-        padding: 'var(--space-2xl) 0 var(--space-lg)',
-      }}>
+      <section ref={heroRef} style={{ padding: 'var(--space-2xl) 0 var(--space-lg)' }}>
         <div className="container">
-          <h1 data-hero-headline style={{
-            fontSize: 'clamp(40px, 5vw, 72px)',
-            fontWeight: 800,
-            lineHeight: 0.95,
-            letterSpacing: '-0.02em',
-            textTransform: 'uppercase',
-          }}>
+          <h1
+            data-hero-headline
+            style={{
+              fontSize: 'clamp(40px, 5vw, 72px)',
+              fontWeight: 800,
+              lineHeight: 0.95,
+              letterSpacing: '-0.02em',
+              textTransform: 'uppercase',
+            }}
+          >
             <span className="word" style={{ display: 'block' }}>Selected</span>
             <span className="word" style={{ display: 'block' }}>Works</span>
           </h1>
 
-          <p data-hero-sub style={{
-            fontSize: '14px',
-            lineHeight: 1.6,
-            color: 'var(--text-body)',
-            maxWidth: '480px',
-            marginTop: 'var(--space-md)',
-          }}>
+          <p
+            data-hero-sub
+            style={{
+              fontSize: '14px',
+              lineHeight: 1.6,
+              color: 'var(--text-body)',
+              maxWidth: '480px',
+              marginTop: 'var(--space-md)',
+            }}
+          >
             A curated collection of projects showcasing architectural logic,
             minimalist design systems, and intelligent automation.
           </p>
         </div>
       </section>
 
-      {/* Projects Grid */}
-      <section style={{
-        padding: '0 0 var(--space-xl)',
-      }}>
+      {/* Projects Grid — two columns on desktop, one on mobile */}
+      <section style={{ padding: '0 0 var(--space-xl)' }}>
         <div className="container">
-          <div ref={projectsRef} className="projects-grid" style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(2, 1fr)',
-            gap: '32px',
-          }}>
+          <div
+            ref={projectsRef}
+            className="projects-grid"
+            style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '32px' }}
+          >
             {projects.map((project) => (
               <ProjectCard key={project.title} project={project} />
             ))}
@@ -265,37 +264,39 @@ export default function ProjectPage() {
       </section>
 
       {/* CTA Section */}
-      <section ref={ctaRef} style={{
-        padding: 'var(--space-xl) 0 var(--space-2xl)',
-      }}>
-        <div className="container" style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-          flexWrap: 'wrap',
-          gap: 'var(--space-lg)',
-        }}>
+      <section ref={ctaRef} style={{ padding: 'var(--space-xl) 0 var(--space-2xl)' }}>
+        <div
+          className="container"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'flex-end',
+            flexWrap: 'wrap',
+            gap: 'var(--space-lg)',
+          }}
+        >
           <div>
-            <h2 style={{
-              fontSize: 'clamp(28px, 3vw, 42px)',
-              fontWeight: 800,
-              textTransform: 'uppercase',
-              letterSpacing: '-0.01em',
-              lineHeight: 1.05,
-            }}>
+            <h2
+              style={{
+                fontSize: 'clamp(28px, 3vw, 42px)',
+                fontWeight: 800,
+                textTransform: 'uppercase',
+                letterSpacing: '-0.01em',
+                lineHeight: 1.05,
+              }}
+            >
               LET'S BUILD<br />SOMETHING<br />SUBSTANTIAL.
             </h2>
-            <p style={{
-              fontSize: '14px',
-              color: 'var(--text-muted)',
-              marginTop: '16px',
-            }}>
+            <p style={{ fontSize: '14px', color: 'var(--text-muted)', marginTop: '16px' }}>
               Have a project in mind? Let's discuss how we can create something remarkable together.
             </p>
           </div>
 
+          {/* Contact link — arrow slides outward on hover */}
           <a
             href="#"
+            onMouseEnter={(e) => (e.currentTarget.style.gap = '16px')}
+            onMouseLeave={(e) => (e.currentTarget.style.gap = '8px')}
             style={{
               fontSize: 'clamp(18px, 2vw, 24px)',
               fontWeight: 700,
@@ -306,14 +307,13 @@ export default function ProjectPage() {
               gap: '8px',
               transition: 'gap 0.2s ease',
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.gap = '16px')}
-            onMouseLeave={(e) => (e.currentTarget.style.gap = '8px')}
           >
             CONTACT <span>→</span>
           </a>
         </div>
       </section>
 
+      {/* Responsive: single column below 768px */}
       <style>{`
         @media (max-width: 768px) {
           .projects-grid {

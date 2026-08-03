@@ -1,24 +1,36 @@
+/* ============================================================
+   Global styles — monochrome design tokens, reset and utilities.
+   ============================================================ */
+
+/* Typography + Tailwind v4 import */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+/* ------------------------------------------------------------
+   Design tokens — the whole site's palette, spacing, fonts.
+   Every color is a shade of black/white/gray (monochrome theme).
+   ------------------------------------------------------------ */
 :root {
-  --bg-primary: #000000;
-  --bg-secondary: #0a0a0a;
-  --bg-card-dark: #1a1a1a;
-  --bg-card-light: #ffffff;
+  /* Colors */
+  --bg-primary: #000000;        /* page background */
+  --bg-secondary: #0a0a0a;      /* section/footer background */
+  --bg-card-dark: #1a1a1a;      /* dark card surface */
+  --bg-card-light: #ffffff;     /* light card surface */
   --bg-card-light-alt: #f0f0f0;
-  --text-primary: #ffffff;
-  --text-inverse: #000000;
+  --text-primary: #ffffff;      /* primary text (light on dark bg) */
+  --text-inverse: #000000;      /* text on light/white surfaces */
   --text-muted: #888888;
   --text-muted-dark: #666666;
-  --text-body: #aaaaaa;
+  --text-body: #aaaaaa;         /* body copy */
   --border-subtle: #333333;
   --border-hover: #555555;
   --accent: #ffffff;
-  --ghost-text: #0d0d0d;
+  --ghost-text: #0d0d0d;        /* giant faint background words */
 
+  /* Typography */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 
+  /* Spacing scale */
   --space-xs: 8px;
   --space-sm: 16px;
   --space-md: 24px;
@@ -26,9 +38,11 @@
   --space-xl: 80px;
   --space-2xl: 120px;
 
-  --container-max: 1280px;
-  --container-padding: 48px;
+  /* Layout */
+  --container-max: 1280px;      /* max page content width */
+  --container-padding: 48px;    /* side gutter */
 
+  /* Base element defaults */
   font-family: var(--font-sans);
   font-size: 16px;
   line-height: 1.6;
@@ -39,6 +53,7 @@
   text-rendering: optimizeLegibility;
 }
 
+/* Responsive gutters: tighter on smaller screens */
 @media (max-width: 768px) {
   :root {
     --container-padding: 16px;
@@ -51,6 +66,9 @@
   }
 }
 
+/* ------------------------------------------------------------
+   Reset — normalize box sizing and default spacing.
+   ------------------------------------------------------------ */
 * {
   margin: 0;
   padding: 0;
@@ -77,6 +95,9 @@ body {
   min-height: 100vh;
 }
 
+/* ------------------------------------------------------------
+   Base element styles
+   ------------------------------------------------------------ */
 a {
   color: inherit;
   text-decoration: none;
@@ -87,6 +108,7 @@ img {
   display: block;
 }
 
+/* Center a page section within the max width */
 .container {
   max-width: var(--container-max);
   margin: 0 auto;
@@ -94,7 +116,11 @@ img {
   padding-right: var(--container-padding);
 }
 
-/* Monochrome filter for images */
+/* ------------------------------------------------------------
+   Utilities
+   ------------------------------------------------------------ */
+
+/* Grayscale filter for images; color on hover or when .active */
 .img-monochrome {
   filter: grayscale(100%) brightness(0.8);
   transition: filter 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -105,7 +131,11 @@ img {
   filter: grayscale(0%) brightness(1);
 }
 
-/* Scrollbar styling */
+/* ------------------------------------------------------------
+   Native UI details — scrollbar, selection, focus.
+   ------------------------------------------------------------ */
+
+/* Slim dark scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -120,18 +150,21 @@ img {
   background: var(--border-hover);
 }
 
-/* Selection */
+/* Selection color */
 ::selection {
   background: rgba(255, 255, 255, 0.15);
   color: var(--text-primary);
 }
 
-/* Focus visible */
+/* Visible focus ring for keyboard navigation */
 :focus-visible {
   outline: 1px solid var(--border-hover);
   outline-offset: 2px;
 }
 
+/* ------------------------------------------------------------
+   Accessibility — respect users who prefer reduced motion.
+   ------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

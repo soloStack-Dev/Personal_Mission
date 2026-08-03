@@ -1,5 +1,31 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 
+/**
+ * DustImageReveal — a canvas animation that turns images into a cloud
+ * of "dust" particles, which periodically morph into the next image.
+ *
+ * How it works:
+ * 1. Every image is preloaded once.
+ * 2. Each image is sampled on an offscreen canvas: every N pixels becomes
+ *    one particle, carrying its target position + color.
+ * 3. An animation loop then plays a repeating cycle per image:
+ *      FORM     (60 frames) particles fly from random spots to their target,
+ *      HOLD     (90 frames) the picture stays assembled,
+ *      DISSOLVE (60 frames) particles scatter away.
+ *    When the cycle restarts the next image is loaded and the loop repeats.
+ * 4. On hover / touch the particles render in their ORIGINAL colors and the
+ *    animation runs at half speed; normally everything is grayscale.
+ *
+ * Timing constants (in frames @ ~60fps):
+ */
+const PARTICLE_SIZE = 3 // square size of one particle in px
+const GAP = 4           // sample one pixel every GAP px when reading the image
+const FORM_DURATION = 60
+const HOLD_DURATION = 90
+const DISSOLVE_DURATION = 60
+const CYCLE_FRAMES = FORM_DURATION + HOLD_DURATION + DISSOLVE_DURATION
+
+/** Images cycled through by the reveal animation. */
 const IMAGES = [
   '/userImages/Faleel.jpeg',
   '/userImages/stackasserts/bhvrstack.png',
@@ -28,13 +54,15 @@ const IMAGES = [
   '/skillsImage/Bun.png',
 ]
 
-const PARTICLE_SIZE = 3
-const GAP = 4
-const FORM_DURATION = 60
-const HOLD_DURATION = 90
-const DISSOLVE_DURATION = 60
-const CYCLE_FRAMES = FORM_DURATION + HOLD_DURATION + DISSOLVE_DURATION
-
+/**
+ * One particle of the animation.
+ * - tx/ty   : target position (where it sits in the formed image)
+ * - x/y     : current position
+ * - vx/vy   : current velocity (used while dissolving)
+ * - r/g/b   : grayscale color (brightness of the sampled pixel)
+ * - a       : current alpha
+ * - or/og/ob: ORIGINAL colors, used when the user hovers the canvas
+ */
 interface Particle {
   tx: number
   ty: number
@@ -51,20 +79,29 @@ interface Particle {
   ob: number
 }
 
+/**
+ * Reads an image and converts it into a particle list.
+ * Each particle = one sampled pixel, colored by its brightness.
+ */
 function sampleImage(img: HTMLImageElement, canvasW: number, canvasH: number): Particle[] {
+  // Draw the image centered + scaled to fit the canvas, on an offscreen canvas
   const offscreen = document.createElement('canvas')
   offscreen.width = canvasW
   offscreen.height = canvasH
   const offCtx = offscreen.getContext('2d')!
+
   const scale = Math.min(canvasW / img.width, canvasH / img.height)
   const w = img.width * scale
   const h = img.height * scale
   const ox = (canvasW - w) / 2
   const oy = (canvasH - h) / 2
   offCtx.drawImage(img, ox, oy, w, h)
+
+  // Read the raw RGBA pixel data of the drawn image
   const data = offCtx.getImageData(0, 0, canvasW, canvasH).data
   const particles: Particle[] = []
 
+  // Walk through the image every GAP pixels and keep the opaque ones
   for (let y = 0; y < canvasH; y += GAP) {
     for (let x = 0; x < canvasW; x += GAP) {
       const i = (y * canvasW + x) * 4
@@ -72,9 +109,13 @@ function sampleImage(img: HTMLImageElement, canvasW: number, canvasH: number): P
       const g = data[i + 1]
       const b = data[i + 2]
       const a = data[i + 3]
-      if (a < 30) continue
+      if (a < 30) continue // skip fully transparent pixels
+
+      // Grayscale = perceived brightness of the pixel
       const gray = 0.299 * r + 0.587 * g + 0.114 * b
       const bright = gray * (a / 255)
+
+      // Start the particle at a random position with a random velocity
       particles.push({
         tx: x,
         ty: y,
@@ -95,31 +136,37 @@ function sampleImage(img: HTMLImageElement, canvasW: number, canvasH: number): P
   return particles
 }
 
+/** Standard easing: slow start + slow end for a smooth drift. */
 function easeInOutCubic(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
 }
 
+/**
+ * Component — the visible part is just a canvas + a status label.
+ * All the animation lives inside one `useEffect` so it never re-runs.
+ */
 export default function DustImageReveal() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+
+  // React state only for the UI label ("SEQUENCE_xx" + hover styling).
+  // The hot animation loop reads the mirrored refs instead, to avoid re-renders.
   const [seqNum, setSeqNum] = useState(1)
   const [active, setActive] = useState(false)
   const activeRef = useRef(false)
 
+  /** Hover/touch entered — show original colors + half speed. */
   const onEnter = useCallback(() => {
     activeRef.current = true
     setActive(true)
-    if (canvasRef.current) {
-      canvasRef.current.style.filter = 'contrast(1.1)'
-    }
+    if (canvasRef.current) canvasRef.current.style.filter = 'contrast(1.1)'
   }, [])
 
+  /** Hover/touch left — back to grayscale. */
   const onLeave = useCallback(() => {
     activeRef.current = false
     setActive(false)
-    if (canvasRef.current) {
-      canvasRef.current.style.filter = 'grayscale(100%) contrast(1.1)'
-    }
+    if (canvasRef.current) canvasRef.current.style.filter = 'grayscale(100%) contrast(1.1)'
   }, [])
 
   useEffect(() => {
@@ -128,6 +175,8 @@ export default function DustImageReveal() {
     if (!canvas || !container) return
 
     const ctx = canvas.getContext('2d')!
+
+    // Mutable animation state (all local to the effect)
     let animId = 0
     let particles: Particle[] = []
     let loadedImages: HTMLImageElement[] = []
@@ -136,8 +185,9 @@ export default function DustImageReveal() {
     let started = false
     let cW = 400
     let cH = 400
-    let skipFrame = false
+    let skipFrame = false // used to halve speed while hovered
 
+    /** Size the canvas square (max 400px) to match its container. */
     const resize = () => {
       const rect = container.getBoundingClientRect()
       const size = Math.min(rect.width, 400)
@@ -148,6 +198,7 @@ export default function DustImageReveal() {
     }
     resize()
 
+    // Preload every image once, then sample the first one to start the loop
     const loadAll = Promise.all(
       IMAGES.map(
         (src) =>
@@ -155,18 +206,18 @@ export default function DustImageReveal() {
             const img = new Image()
             img.crossOrigin = 'anonymous'
             img.onload = () => resolve(img)
-            img.onerror = () => resolve(img)
+            img.onerror = () => resolve(img) // even failed loads resolve so the loop survives
             img.src = src
-          })
-      )
+          }),
+      ),
     )
-
     loadAll.then((imgs) => {
       loadedImages = imgs
       particles = sampleImage(imgs[0], cW, cH)
       started = true
     })
 
+    // Start / keep the loop running only while the canvas is on screen
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && started) {
@@ -174,11 +225,13 @@ export default function DustImageReveal() {
           if (!animId) tick()
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     )
     observer.observe(container)
 
+    /** The main animation loop — runs every animation frame. */
     function tick() {
+      // Wait until images are loaded before drawing anything
       if (!started) {
         animId = requestAnimationFrame(tick)
         return
@@ -186,6 +239,7 @@ export default function DustImageReveal() {
 
       const isHovered = activeRef.current
 
+      // While hovered, render every OTHER frame → animation at half speed
       if (isHovered) {
         skipFrame = !skipFrame
         if (skipFrame) {
@@ -194,15 +248,19 @@ export default function DustImageReveal() {
         }
       }
 
+      // Clear + paint the solid background
       ctx.clearRect(0, 0, cW, cH)
       ctx.fillStyle = '#0a0a0a'
       ctx.fillRect(0, 0, cW, cH)
 
       const phase = frame % CYCLE_FRAMES
 
+      // New cycle: advance to the next image, keeping the particles'
+      // current position so the old image visually morphs into the new one
       if (frame > 0 && phase === 0) {
         currentIdx = (currentIdx + 1) % IMAGES.length
         setSeqNum(currentIdx + 1)
+
         const newParticles = sampleImage(loadedImages[currentIdx], cW, cH)
         const minLen = Math.min(particles.length, newParticles.length)
         for (let i = 0; i < minLen; i++) {
@@ -214,6 +272,10 @@ export default function DustImageReveal() {
         particles = newParticles
       }
 
+      // ---- Move particles depending on the current phase ----
+
+      // FORM: drift from the random start point toward the target,
+      // with random jitter that shrinks as the image assembles
       if (phase < FORM_DURATION) {
         const t = easeInOutCubic(phase / FORM_DURATION)
         for (const p of particles) {
@@ -222,14 +284,18 @@ export default function DustImageReveal() {
           p.x += (Math.random() - 0.5) * (1 - t) * 2
           p.y += (Math.random() - 0.5) * (1 - t) * 2
         }
-      } else if (phase < FORM_DURATION + HOLD_DURATION) {
+      }
+      // HOLD: image is formed — tiny idle shimmer around each target
+      else if (phase < FORM_DURATION + HOLD_DURATION) {
         for (const p of particles) {
           p.x += (Math.random() - 0.5) * 0.3
           p.y += (Math.random() - 0.5) * 0.3
           p.x += (p.tx - p.x) * 0.05
           p.y += (p.ty - p.y) * 0.05
         }
-      } else {
+      }
+      // DISSOLVE: accelerate particles outward + fade them out
+      else {
         const dissolvePhase = phase - FORM_DURATION - HOLD_DURATION
         const t = easeInOutCubic(dissolvePhase / DISSOLVE_DURATION)
         for (const p of particles) {
@@ -243,13 +309,13 @@ export default function DustImageReveal() {
         }
       }
 
+      // ---- Draw every visible particle ----
       for (const p of particles) {
         if (p.a < 5) continue
-        if (isHovered) {
-          ctx.fillStyle = `rgba(${p.or},${p.og},${p.ob},${p.a / 255})`
-        } else {
-          ctx.fillStyle = `rgba(${Math.round(p.r)},${Math.round(p.g)},${Math.round(p.b)},${p.a / 255})`
-        }
+        // Hovered → true colors; otherwise grayscale brightness
+        ctx.fillStyle = isHovered
+          ? `rgba(${p.or},${p.og},${p.ob},${p.a / 255})`
+          : `rgba(${Math.round(p.r)},${Math.round(p.g)},${Math.round(p.b)},${p.a / 255})`
         ctx.fillRect(p.x - PARTICLE_SIZE / 2, p.y - PARTICLE_SIZE / 2, PARTICLE_SIZE, PARTICLE_SIZE)
       }
 
@@ -259,9 +325,11 @@ export default function DustImageReveal() {
 
     animId = requestAnimationFrame(tick)
 
+    // Recompute the canvas size if the container resizes (responsive layout)
     const ro = new ResizeObserver(resize)
     ro.observe(container)
 
+    // Full cleanup: stop the loop and disconnect both observers
     return () => {
       cancelAnimationFrame(animId)
       observer.disconnect()
@@ -298,18 +366,22 @@ export default function DustImageReveal() {
           transition: 'filter 0.8s ease',
         }}
       />
-      <span style={{
-        position: 'absolute',
-        bottom: '12px',
-        left: '12px',
-        fontSize: '10px',
-        fontWeight: 500,
-        letterSpacing: '0.08em',
-        textTransform: 'uppercase',
-        color: active ? '#888' : '#444',
-        pointerEvents: 'none',
-        transition: 'color 0.6s ease',
-      }}>
+
+      {/* Status label: which image is currently forming */}
+      <span
+        style={{
+          position: 'absolute',
+          bottom: '12px',
+          left: '12px',
+          fontSize: '10px',
+          fontWeight: 500,
+          letterSpacing: '0.08em',
+          textTransform: 'uppercase',
+          color: active ? '#888' : '#444',
+          pointerEvents: 'none',
+          transition: 'color 0.6s ease',
+        }}
+      >
         {active ? 'LIVE_COLOR // ' : 'DUST_REVEAL // '}SEQUENCE_{String(seqNum).padStart(2, '0')}
       </span>
     </div>

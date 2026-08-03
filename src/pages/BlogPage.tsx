@@ -7,8 +7,10 @@ import { useScrollFadeIn, useStaggerChildren, useHeroAnimation } from '../hooks/
 
 gsap.registerPlugin(ScrollTrigger)
 
+/** Email validation used by the newsletter form. */
 const emailSchema = z.string().email('Please enter a valid email address')
 
+/** Every skill shown in the skills grid, with its image. */
 const skills = [
   { name: 'HTML & CSS', image: '/skillsImage/htmlandcss.jpg' },
   { name: 'JavaScript', image: '/skillsImage/javascript.jpg' },
@@ -34,6 +36,7 @@ const skills = [
   { name: 'MS Excel', image: '/skillsImage/MSExcel.jpg' },
 ]
 
+/** The BHVR learning roadmap: branches of the stack, each with skills + notes. */
 const roadmap = [
   {
     title: 'Frontend',
@@ -135,12 +138,14 @@ const roadmap = [
   },
 ]
 
+/** Sample articles listed under "Latest Insights". */
 const articles = [
   { date: 'MAY 2024', title: 'Scaling Vector DBs with RAG Architecture', category: 'ARCHITECTURE' },
   { date: 'APR 2024', title: 'Why React is my choice for AI Frontends', category: 'FRONTEND' },
   { date: 'MAR 2024', title: 'Dockerizing Microservices for Webhook Ops', category: 'DEVOPS' },
 ]
 
+/** Warm the browser image cache for a URL; resolves either way. */
 function fetchSkillImage(url: string): Promise<string> {
   return new Promise((resolve) => {
     const img = new Image()
@@ -150,6 +155,10 @@ function fetchSkillImage(url: string): Promise<string> {
   })
 }
 
+/**
+ * SkillCard — one grayscale skill tile.
+ * On hover the image regains its color and the card lifts slightly.
+ */
 function SkillCard({ skill }: { skill: typeof skills[0] }) {
   const cardRef = useRef<HTMLDivElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
@@ -159,10 +168,12 @@ function SkillCard({ skill }: { skill: typeof skills[0] }) {
     const img = imgRef.current
     if (!card || !img) return
 
+    // Hover: reveal color + lift the card
     const handleEnter = () => {
       gsap.to(img, { filter: 'grayscale(0%) brightness(1)', duration: 0.4, ease: 'power2.out' })
       gsap.to(card, { borderColor: '#555555', y: -2, duration: 0.2, ease: 'power2.out' })
     }
+    // Leave: back to grayscale + resting position
     const handleLeave = () => {
       gsap.to(img, { filter: 'grayscale(100%) brightness(0.7)', duration: 0.4, ease: 'power2.out' })
       gsap.to(card, { borderColor: '#2a2a2a', y: 0, duration: 0.2, ease: 'power2.out' })
@@ -193,14 +204,17 @@ function SkillCard({ skill }: { skill: typeof skills[0] }) {
         overflow: 'hidden',
       }}
     >
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        marginBottom: '8px',
-      }}>
+      {/* Skill logo */}
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+          marginBottom: '8px',
+        }}
+      >
         <img
           ref={imgRef}
           src={skill.image}
@@ -216,44 +230,204 @@ function SkillCard({ skill }: { skill: typeof skills[0] }) {
           }}
         />
       </div>
-      <div style={{
-        fontSize: '10px',
-        fontWeight: 700,
-        letterSpacing: '0.05em',
-        textTransform: 'uppercase',
-        color: 'var(--text-primary)',
-        textAlign: 'center',
-      }}>
+
+      {/* Skill name */}
+      <div
+        style={{
+          fontSize: '10px',
+          fontWeight: 700,
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+          color: 'var(--text-primary)',
+          textAlign: 'center',
+        }}
+      >
         {skill.name}
       </div>
     </div>
   )
 }
 
+/**
+ * RoadmapBranch — one row of the BHVR tree:
+ * a trunk (index + title + level) on the left, skill chips on the right.
+ */
+function RoadmapBranch({ section, index, isLast }: { section: typeof roadmap[0]; index: number; isLast: boolean }) {
+  return (
+    <div
+      className="roadmap-branch"
+      style={{ display: 'grid', gridTemplateColumns: '260px 1fr', position: 'relative' }}
+    >
+      {/* Trunk column: vertical line + node + heading */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
+          paddingRight: '32px',
+          position: 'relative',
+        }}
+      >
+        {/* Vertical connector line (hidden under the last row) */}
+        <div
+          style={{
+            position: 'absolute',
+            right: '11px',
+            top: 0,
+            bottom: 0,
+            width: '2px',
+            background: isLast ? 'transparent' : '#222',
+          }}
+        />
+        {/* Clickable node dot */}
+        <div
+          className="roadmap-node"
+          style={{
+            width: '24px',
+            height: '24px',
+            border: '2px solid #333',
+            background: '#0a0a0a',
+            position: 'absolute',
+            right: 0,
+            top: '24px',
+            zIndex: 2,
+            transition: 'all 0.3s ease',
+            cursor: 'pointer',
+          }}
+        />
+        {/* Heading: number + title + level */}
+        <div style={{ paddingTop: '16px', paddingBottom: '24px', textAlign: 'right' }}>
+          <div
+            style={{
+              fontSize: '10px',
+              fontWeight: 500,
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: '#555',
+              marginBottom: '4px',
+            }}
+          >
+            {String(index + 1).padStart(2, '0')}
+          </div>
+          <div
+            style={{
+              fontSize: '18px',
+              fontWeight: 700,
+              letterSpacing: '-0.01em',
+              textTransform: 'uppercase',
+            }}
+          >
+            {section.title}
+          </div>
+          <div style={{ fontSize: '11px', color: '#666', marginTop: '4px' }}>{section.level}</div>
+        </div>
+      </div>
+
+      {/* Skills column: wrap of chips */}
+      <div
+        style={{
+          borderLeft: isLast ? 'none' : '1px solid #1a1a1a',
+          paddingLeft: '32px',
+          paddingBottom: '32px',
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '12px',
+          alignItems: 'flex-start',
+          alignContent: 'flex-start',
+        }}
+      >
+        {section.items.map((item) => (
+          <div
+            key={item.name}
+            className="roadmap-skill"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+              padding: '10px 14px',
+              border: '1px solid #1a1a1a',
+              background: '#0a0a0a',
+              transition: 'all 0.3s ease',
+              cursor: 'pointer',
+              flex: '0 0 auto',
+            }}
+          >
+            {/* Chip icon (only some skills have one) */}
+            {item.image && (
+              <img
+                src={item.image}
+                alt={item.name}
+                loading="lazy"
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  objectFit: 'contain',
+                  filter: 'grayscale(100%) brightness(0.7)',
+                  transition: 'filter 0.3s ease',
+                }}
+              />
+            )}
+            {/* Chip name */}
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: 600,
+                letterSpacing: '0.04em',
+                color: 'var(--text-muted)',
+                transition: 'color 0.3s ease',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {item.name}
+            </span>
+            {/* Optional note tag, e.g. "Auth" */}
+            {item.note && (
+              <span
+                style={{
+                  fontSize: '9px',
+                  color: '#444',
+                  border: '1px solid #222',
+                  padding: '2px 6px',
+                  letterSpacing: '0.05em',
+                  textTransform: 'uppercase',
+                  transition: 'all 0.3s ease',
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {item.note}
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+/** BlogPage — skills grid, insights list, BHVR roadmap and newsletter. */
 export default function BlogPage() {
   const heroRef = useHeroAnimation()
   const articlesRef = useStaggerChildren<HTMLDivElement>()
   const newsletterRef = useScrollFadeIn()
+
+  // Newsletter form state
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState('')
   const [subscribed, setSubscribed] = useState(false)
 
+  // Preload all skill images once, so the grid has no pop-in.
+  // Until loaded, the static `skills` array is shown.
   const { data: loadedSkills } = useQuery({
     queryKey: ['skills-images'],
     queryFn: async () => {
-      const results = await Promise.all(
-        skills.map(async (skill) => {
-          await fetchSkillImage(skill.image)
-          return skill
-        })
-      )
+      const results = await Promise.all(skills.map((skill) => fetchSkillImage(skill.image).then(() => skill)))
       return results
     },
     staleTime: 10 * 60 * 1000,
   })
-
   const displaySkills = loadedSkills || skills
 
+  /** Validate the email, then mark the user as subscribed. */
   const handleSubscribe = () => {
     const result = emailSchema.safeParse(email)
     if (!result.success) {
@@ -267,55 +441,57 @@ export default function BlogPage() {
 
   return (
     <div>
-      {/* Hero Section */}
-      <section ref={heroRef} style={{
-        padding: 'var(--space-2xl) 0 var(--space-lg)',
-        position: 'relative',
-        overflow: 'hidden',
-      }}>
-        {/* Ghost Text */}
-        <div style={{
-          position: 'absolute',
-          top: '60px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          fontSize: 'clamp(120px, 20vw, 280px)',
-          fontWeight: 800,
-          color: 'var(--ghost-text)',
-          whiteSpace: 'nowrap',
-          userSelect: 'none',
-          pointerEvents: 'none',
-          zIndex: 0,
-        }}>
+      {/* Hero Section — big headline over a ghost-text backdrop */}
+      <section ref={heroRef} style={{ padding: 'var(--space-2xl) 0 var(--space-lg)', position: 'relative', overflow: 'hidden' }}>
+        {/* Giant faint background word */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '60px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            fontSize: 'clamp(120px, 20vw, 280px)',
+            fontWeight: 800,
+            color: 'var(--ghost-text)',
+            whiteSpace: 'nowrap',
+            userSelect: 'none',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }}
+        >
           Skills
         </div>
 
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
-          <h1 data-hero-headline style={{
-            fontSize: 'clamp(40px, 6vw, 80px)',
-            fontWeight: 800,
-            lineHeight: 0.95,
-            letterSpacing: '-0.03em',
-            marginBottom: 'var(--space-md)',
-          }}>
+          <h1
+            data-hero-headline
+            style={{
+              fontSize: 'clamp(40px, 6vw, 80px)',
+              fontWeight: 800,
+              lineHeight: 0.95,
+              letterSpacing: '-0.03em',
+              marginBottom: 'var(--space-md)',
+            }}
+          >
             <span className="word" style={{ display: 'block' }}>Skills</span>
             <span className="word" style={{ display: 'block' }}>&</span>
             <span className="word" style={{ display: 'block' }}>Insights</span>
           </h1>
 
-          <div data-hero-headline style={{
-            width: '60px',
-            height: '2px',
-            background: 'var(--text-primary)',
-            marginBottom: 'var(--space-md)',
-          }} />
+          <div
+            data-hero-headline
+            style={{ width: '60px', height: '2px', background: 'var(--text-primary)', marginBottom: 'var(--space-md)' }}
+          />
 
-          <p data-hero-sub style={{
-            fontSize: '16px',
-            lineHeight: 1.6,
-            color: 'var(--text-body)',
-            maxWidth: '520px',
-          }}>
+          <p
+            data-hero-sub
+            style={{
+              fontSize: '16px',
+              lineHeight: 1.6,
+              color: 'var(--text-body)',
+              maxWidth: '520px',
+            }}
+          >
             Exploring the intersection of web architecture, artificial intelligence,
             and database systems. A collection of technologies and insights that shape
             modern software development.
@@ -324,15 +500,9 @@ export default function BlogPage() {
       </section>
 
       {/* Skills Grid */}
-      <section style={{
-        padding: '0 0 var(--space-xl)',
-      }}>
+      <section style={{ padding: '0 0 var(--space-xl)' }}>
         <div className="container">
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))',
-            gap: '8px',
-          }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: '8px' }}>
             {displaySkills.map((skill) => (
               <SkillCard key={skill.name} skill={skill} />
             ))}
@@ -340,49 +510,45 @@ export default function BlogPage() {
         </div>
       </section>
 
-      {/* Latest Insights */}
-      <section style={{
-        padding: 'var(--space-xl) 0',
-      }}>
+      {/* Latest Insights — article rows */}
+      <section style={{ padding: 'var(--space-xl) 0' }}>
         <div className="container">
-          <div style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'baseline',
-            marginBottom: 'var(--space-lg)',
-          }}>
-            <h2 style={{
-              fontSize: 'clamp(28px, 3vw, 42px)',
-              fontWeight: 800,
-              letterSpacing: '-0.01em',
-              textTransform: 'uppercase',
-            }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'baseline',
+              marginBottom: 'var(--space-lg)',
+            }}
+          >
+            <h2
+              style={{
+                fontSize: 'clamp(28px, 3vw, 42px)',
+                fontWeight: 800,
+                letterSpacing: '-0.01em',
+                textTransform: 'uppercase',
+              }}
+            >
               Latest Insights
             </h2>
-            <span style={{
-              fontSize: '11px',
-              fontWeight: 500,
-              letterSpacing: '0.08em',
-              color: 'var(--text-muted-dark)',
-              textTransform: 'uppercase',
-            }}>
+            <span
+              style={{
+                fontSize: '11px',
+                fontWeight: 500,
+                letterSpacing: '0.08em',
+                color: 'var(--text-muted-dark)',
+                textTransform: 'uppercase',
+              }}
+            >
               / 003 ARTICLES
             </span>
           </div>
 
+          {/* Each row slides its title right on hover */}
           <div ref={articlesRef}>
             {articles.map((article) => (
               <div
                 key={article.title}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  padding: '20px 0',
-                  borderBottom: '1px solid #222',
-                  cursor: 'pointer',
-                  transition: 'background 0.25s ease',
-                  gap: '24px',
-                }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.background = 'var(--bg-secondary)'
                   const title = e.currentTarget.querySelector('.article-title') as HTMLElement
@@ -393,31 +559,36 @@ export default function BlogPage() {
                   const title = e.currentTarget.querySelector('.article-title') as HTMLElement
                   if (title) title.style.transform = 'translateX(0)'
                 }}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '20px 0',
+                  borderBottom: '1px solid #222',
+                  cursor: 'pointer',
+                  transition: 'background 0.25s ease',
+                  gap: '24px',
+                }}
               >
-                <span style={{
-                  fontSize: '11px',
-                  color: 'var(--text-muted-dark)',
-                  minWidth: '80px',
-                }}>
+                <span style={{ fontSize: '11px', color: 'var(--text-muted-dark)', minWidth: '80px' }}>
                   {article.date}
                 </span>
-                <span className="article-title" style={{
-                  fontSize: '18px',
-                  fontWeight: 600,
-                  flex: 1,
-                  transition: 'transform 0.25s ease',
-                }}>
+                <span
+                  className="article-title"
+                  style={{ fontSize: '18px', fontWeight: 600, flex: 1, transition: 'transform 0.25s ease' }}
+                >
                   {article.title}
                 </span>
-                <span style={{
-                  fontSize: '10px',
-                  fontWeight: 500,
-                  letterSpacing: '0.08em',
-                  textTransform: 'uppercase',
-                  color: 'var(--text-muted)',
-                  border: '1px solid var(--border-subtle)',
-                  padding: '4px 12px',
-                }}>
+                <span
+                  style={{
+                    fontSize: '10px',
+                    fontWeight: 500,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    color: 'var(--text-muted)',
+                    border: '1px solid var(--border-subtle)',
+                    padding: '4px 12px',
+                  }}
+                >
                   {article.category}
                 </span>
               </div>
@@ -427,235 +598,100 @@ export default function BlogPage() {
       </section>
 
       {/* BHVR Stack Roadmap */}
-      <section style={{
-        padding: 'var(--space-xl) 0 var(--space-2xl)',
-      }}>
+      <section style={{ padding: 'var(--space-xl) 0 var(--space-2xl)' }}>
         <div className="container">
           <div style={{ marginBottom: 'var(--space-xl)' }}>
-            <span style={{
-              display: 'block',
-              fontSize: '11px',
-              fontWeight: 500,
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              color: '#666',
-              marginBottom: '16px',
-            }}>
+            <span
+              style={{
+                display: 'block',
+                fontSize: '11px',
+                fontWeight: 500,
+                letterSpacing: '0.12em',
+                textTransform: 'uppercase',
+                color: '#666',
+                marginBottom: '16px',
+              }}
+            >
               LEARNING PATH
             </span>
-            <h2 style={{
-              fontSize: 'clamp(28px, 4vw, 48px)',
-              fontWeight: 800,
-              letterSpacing: '-0.02em',
-              textTransform: 'uppercase',
-              lineHeight: 1,
-            }}>
+            <h2
+              style={{
+                fontSize: 'clamp(28px, 4vw, 48px)',
+                fontWeight: 800,
+                letterSpacing: '-0.02em',
+                textTransform: 'uppercase',
+                lineHeight: 1,
+              }}
+            >
               BHVR Stack<br />Roadmap
             </h2>
-            <p style={{
-              fontSize: '14px',
-              color: 'var(--text-body)',
-              maxWidth: '480px',
-              marginTop: '16px',
-              lineHeight: 1.6,
-            }}>
+            <p
+              style={{
+                fontSize: '14px',
+                color: 'var(--text-body)',
+                maxWidth: '480px',
+                marginTop: '16px',
+                lineHeight: 1.6,
+              }}
+            >
               From beginner to advanced — a structured path to becoming a full-stack developer.
             </p>
           </div>
 
-          <div className="roadmap-tree" style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0',
-          }}>
+          {/* Render each branch of the roadmap as a tree row */}
+          <div className="roadmap-tree" style={{ display: 'flex', flexDirection: 'column' }}>
             {roadmap.map((section, sIdx) => (
-              <div
+              <RoadmapBranch
                 key={section.title}
-                className="roadmap-branch"
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '260px 1fr',
-                  gap: '0',
-                  position: 'relative',
-                }}
-              >
-                {/* Trunk line + title */}
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'flex-end',
-                  paddingRight: '32px',
-                  position: 'relative',
-                }}>
-                  <div style={{
-                    position: 'absolute',
-                    right: '11px',
-                    top: 0,
-                    bottom: 0,
-                    width: '2px',
-                    background: sIdx === roadmap.length - 1 ? 'transparent' : '#222',
-                  }} />
-                  <div
-                    className="roadmap-node"
-                    style={{
-                      width: '24px',
-                      height: '24px',
-                      border: '2px solid #333',
-                      background: '#0a0a0a',
-                      position: 'absolute',
-                      right: '0',
-                      top: '24px',
-                      zIndex: 2,
-                      transition: 'all 0.3s ease',
-                      cursor: 'pointer',
-                    }}
-                  />
-                  <div style={{
-                    paddingTop: '16px',
-                    paddingBottom: '24px',
-                    textAlign: 'right',
-                  }}>
-                    <div style={{
-                      fontSize: '10px',
-                      fontWeight: 500,
-                      letterSpacing: '0.1em',
-                      textTransform: 'uppercase',
-                      color: '#555',
-                      marginBottom: '4px',
-                    }}>
-                      {String(sIdx + 1).padStart(2, '0')}
-                    </div>
-                    <div style={{
-                      fontSize: '18px',
-                      fontWeight: 700,
-                      letterSpacing: '-0.01em',
-                      textTransform: 'uppercase',
-                    }}>
-                      {section.title}
-                    </div>
-                    <div style={{
-                      fontSize: '11px',
-                      color: '#666',
-                      marginTop: '4px',
-                    }}>
-                      {section.level}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Skill items */}
-                <div style={{
-                  borderLeft: sIdx === roadmap.length - 1 ? 'none' : '1px solid #1a1a1a',
-                  paddingLeft: '32px',
-                  paddingBottom: '32px',
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '12px',
-                  alignItems: 'flex-start',
-                  alignContent: 'flex-start',
-                }}>
-                  {section.items.map((item) => (
-                    <div
-                      key={item.name}
-                      className="roadmap-skill"
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '10px',
-                        padding: '10px 14px',
-                        border: '1px solid #1a1a1a',
-                        background: '#0a0a0a',
-                        transition: 'all 0.3s ease',
-                        cursor: 'pointer',
-                        flex: '0 0 auto',
-                      }}
-                    >
-                      {item.image && (
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          loading="lazy"
-                          style={{
-                            width: '28px',
-                            height: '28px',
-                            objectFit: 'contain',
-                            filter: 'grayscale(100%) brightness(0.7)',
-                            transition: 'filter 0.3s ease',
-                          }}
-                        />
-                      )}
-                      <span style={{
-                        fontSize: '11px',
-                        fontWeight: 600,
-                        letterSpacing: '0.04em',
-                        color: 'var(--text-muted)',
-                        transition: 'color 0.3s ease',
-                        whiteSpace: 'nowrap',
-                      }}>
-                        {item.name}
-                      </span>
-                      {item.note && (
-                        <span style={{
-                          fontSize: '9px',
-                          color: '#444',
-                          border: '1px solid #222',
-                          padding: '2px 6px',
-                          letterSpacing: '0.05em',
-                          textTransform: 'uppercase',
-                          transition: 'all 0.3s ease',
-                          whiteSpace: 'nowrap',
-                        }}>
-                          {item.note}
-                        </span>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
+                section={section}
+                index={sIdx}
+                isLast={sIdx === roadmap.length - 1}
+              />
             ))}
           </div>
         </div>
       </section>
 
       {/* Newsletter */}
-      <section ref={newsletterRef} style={{
-        padding: 'var(--space-xl) 0',
-      }}>
+      <section ref={newsletterRef} style={{ padding: 'var(--space-xl) 0' }}>
         <div className="container">
-          <div style={{
-            background: 'var(--bg-card-dark)',
-            padding: '64px var(--space-lg)',
-            textAlign: 'center',
-          }}>
-            <span style={{
-              display: 'block',
-              fontSize: '11px',
-              fontWeight: 500,
-              letterSpacing: '0.1em',
-              textTransform: 'uppercase',
-              color: 'var(--text-muted)',
-              marginBottom: '16px',
-            }}>
+          <div style={{ background: 'var(--bg-card-dark)', padding: '64px var(--space-lg)', textAlign: 'center' }}>
+            <span
+              style={{
+                display: 'block',
+                fontSize: '11px',
+                fontWeight: 500,
+                letterSpacing: '0.1em',
+                textTransform: 'uppercase',
+                color: 'var(--text-muted)',
+                marginBottom: '16px',
+              }}
+            >
               STAY UPDATED
             </span>
 
-            <h3 style={{
-              fontSize: 'clamp(22px, 2.5vw, 32px)',
-              fontWeight: 700,
-              maxWidth: '480px',
-              margin: '0 auto var(--space-md)',
-              lineHeight: 1.3,
-            }}>
+            <h3
+              style={{
+                fontSize: 'clamp(22px, 2.5vw, 32px)',
+                fontWeight: 700,
+                maxWidth: '480px',
+                margin: '0 auto var(--space-md)',
+                lineHeight: 1.3,
+              }}
+            >
               Deep dives into tech sent to your inbox monthly.
             </h3>
 
-            <div style={{
-              display: 'flex',
-              maxWidth: '400px',
-              margin: '0 auto',
-              border: '1px solid var(--border-subtle)',
-              background: '#111',
-            }}>
+            {/* Email input + subscribe button */}
+            <div
+              style={{
+                display: 'flex',
+                maxWidth: '400px',
+                margin: '0 auto',
+                border: '1px solid var(--border-subtle)',
+                background: '#111',
+              }}
+            >
               <input
                 type="email"
                 value={email}
@@ -679,6 +715,8 @@ export default function BlogPage() {
               />
               <button
                 onClick={handleSubscribe}
+                onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.7')}
+                onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
                 style={{
                   background: 'transparent',
                   border: 'none',
@@ -692,36 +730,23 @@ export default function BlogPage() {
                   transition: 'opacity 0.2s ease',
                   whiteSpace: 'nowrap',
                 }}
-                onMouseEnter={(e) => (e.currentTarget.style.opacity = '0.7')}
-                onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
               >
                 SUBSCRIBE
               </button>
             </div>
 
+            {/* Validation / success messages */}
             {emailError && (
-              <p style={{
-                color: '#ff4444',
-                fontSize: '12px',
-                marginTop: '12px',
-              }}>
-                {emailError}
-              </p>
+              <p style={{ color: '#ff4444', fontSize: '12px', marginTop: '12px' }}>{emailError}</p>
             )}
-
             {subscribed && (
-              <p style={{
-                color: '#44ff44',
-                fontSize: '12px',
-                marginTop: '12px',
-              }}>
-                Thank you for subscribing!
-              </p>
+              <p style={{ color: '#44ff44', fontSize: '12px', marginTop: '12px' }}>Thank you for subscribing!</p>
             )}
           </div>
         </div>
       </section>
 
+      {/* Hover + responsive styles for the roadmap */}
       <style>{`
         .roadmap-skill:hover {
           border-color: #444 !important;
