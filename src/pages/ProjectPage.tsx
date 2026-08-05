@@ -51,6 +51,29 @@ const projects = [
     image: '/ProjectThumbnailImage/woodenArtist.png',
     link: 'https://wooden-artist.vercel.app/',
   },
+  {
+    // Pattu Silk Saree App — cinematic 3D heritage saree atelier (AARYA).
+    // SEO: description is keyword-rich (Kanchipuram silk, 3D, luxury e-commerce,
+    // Next.js) so crawlers get meaningful on-page content and real search terms.
+    title: 'Pattu Silk Saree App',
+    category: 'WEB APPLICATION',
+    year: '2026',
+    description: 'AARYA — a cinematic 3D e-commerce experience for a modern Indian heritage saree atelier. Hand-woven Kanchipuram silk sarees unfold through GPU liquid-shader galleries, gold dust particles and a five-chapter GSAP scroll timeline. Includes a persisted cart with quantity steppers, filterable collection quick-view, and a 3D order celebration — built with Next.js 16, React 19, Three.js and Zustand.',
+    image: '/ProjectThumbnailImage/pattu-silk-saree-app.png',
+    link: 'https://pattu-silk-saree-app.vercel.app/',
+  },
+  {
+    // Indian Voice Translator — Aura AI, a real-time speech translator.
+    // SEO: description targets "AI voice translator", the supported Indian
+    // languages (Hindi, Tamil, Malayalam, Kannada) and the tech stack used,
+    // matching the live title/alt text for consistent crawling signals.
+    title: 'Indian Voice Translator',
+    category: 'WEB APPLICATION',
+    year: '2026',
+    description: 'Aura AI — a warm, human-centered AI voice translator that types English and speaks your language. Powered by Sarvam AI text-to-speech, it translates and voices English text into Hindi, Tamil, Malayalam and Kannada in real time with a warm female voice. Built with Next.js 16, React 19, TypeScript, Tailwind CSS 4 and GSAP, featuring a live TTS playground and a warm minimalist design system.',
+    image: '/ProjectThumbnailImage/indian-voice-translater.png',
+    link: 'https://translater-app-five.vercel.app/',
+  },
 ]
 
 /**
