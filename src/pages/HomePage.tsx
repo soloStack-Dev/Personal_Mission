@@ -110,7 +110,8 @@ function SubscribeWidget() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: 'subscribe', subscriberEmail: subEmail }),
       })
-      if (!res.ok) throw new Error('Request failed')
+      const contentType = res.headers.get('content-type') ?? ''
+      if (!res.ok || !contentType.includes('application/json')) throw new Error('Request failed')
 
       // Success → clear the input, show a message, reset after 3s
       setSubStatus('success')

@@ -80,7 +80,8 @@ export default function ContactModal() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ type: 'contact', title, subject, message }),
       })
-      if (!res.ok) throw new Error('Request failed')
+      const contentType = res.headers.get('content-type') ?? ''
+      if (!res.ok || !contentType.includes('application/json')) throw new Error('Request failed')
 
       // Success: show the thank-you screen, then close the modal
       setStatus('success')
