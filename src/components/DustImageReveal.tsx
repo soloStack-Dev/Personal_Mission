@@ -28,9 +28,6 @@ const CYCLE_FRAMES = FORM_DURATION + HOLD_DURATION + DISSOLVE_DURATION
 /** Images cycled through by the reveal animation. */
 const IMAGES = [
   '/userImages/Faleel.jpeg',
-  '/userImages/stackasserts/bhvrstack.png',
-  '/userImages/stackasserts/Codemode.jpg',
-  '/userImages/stackasserts/thought.jpg',
   '/skillsImage/react.jpg',
   '/skillsImage/typescript.jpg',
   '/skillsImage/javascript.jpg',
@@ -41,17 +38,17 @@ const IMAGES = [
   '/skillsImage/Zustand.png',
   '/skillsImage/TanstackQuery.png',
   '/skillsImage/ZodTypeValidate.jpg',
-  '/skillsImage/reactRouter.jpg',
   '/skillsImage/LangchainJS.jpg',
   '/skillsImage/MongoDB.jpg',
   '/skillsImage/MySQL.jpg',
   '/skillsImage/SQL.jpg',
-  '/skillsImage/MSExcel.jpg',
   '/skillsImage/DrizzleORM.png',
   '/skillsImage/Docker.jpg',
   '/skillsImage/GitandGitHub.jpg',
-  '/skillsImage/Hono.png',
   '/skillsImage/Bun.png',
+  '/skillsImage/trpc.png',
+  '/skillsImage/T3stack.png',
+  '/skillsImage/nextjsAuth.png',
 ]
 
 /**

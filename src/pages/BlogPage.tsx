@@ -20,12 +20,11 @@ const skills = [
   { name: 'TypeScript', image: '/skillsImage/typescript.jpg' },
   { name: 'React', image: '/skillsImage/react.jpg' },
   { name: 'Next.js', image: '/skillsImage/nextjs.png' },
-  { name: 'React Router', image: '/skillsImage/reactRouter.jpg' },
+  { name: 'Next.js Auth', image: '/skillsImage/nextjsAuth.png' },
   { name: 'Tailwind CSS', image: '/skillsImage/TailwindCss.jpg' },
   { name: 'Material UI', image: '/skillsImage/MaterialUI.jpg' },
   { name: 'Vite', image: '/skillsImage/Vite.png' },
   { name: 'Bun', image: '/skillsImage/Bun.png' },
-  { name: 'Hono', image: '/skillsImage/Hono.png' },
   { name: 'Drizzle ORM', image: '/skillsImage/DrizzleORM.png' },
   { name: 'MySQL', image: '/skillsImage/MySQL.jpg' },
   { name: 'SQL', image: '/skillsImage/SQL.jpg' },
@@ -33,10 +32,10 @@ const skills = [
   { name: 'Docker', image: '/skillsImage/Docker.jpg' },
   { name: 'Git & GitHub', image: '/skillsImage/GitandGitHub.jpg' },
   { name: 'TanStack Query', image: '/skillsImage/TanstackQuery.png' },
+  { name: 'tRPC', image: '/skillsImage/trpc.png' },
   { name: 'Zod', image: '/skillsImage/ZodTypeValidate.jpg' },
   { name: 'Zustand', image: '/skillsImage/Zustand.png' },
   { name: 'LangChain JS', image: '/skillsImage/LangchainJS.jpg' },
-  { name: 'MS Excel', image: '/skillsImage/MSExcel.jpg' },
 ]
 
 /** The BHVR learning roadmap: branches of the stack, each with skills + notes. */
@@ -49,6 +48,7 @@ const roadmap = [
       { name: 'JavaScript', image: '/skillsImage/javascript.jpg' },
       { name: 'React', image: '/skillsImage/react.jpg' },
       { name: 'Next.js', image: '/skillsImage/nextjs.png' },
+      { name: 'Next.js Auth', image: '/skillsImage/nextjsAuth.png' },
       { name: 'Tailwind CSS', image: '/skillsImage/TailwindCss.jpg' },
       { name: 'TanStack Query', image: '/skillsImage/TanstackQuery.png' },
       { name: 'TypeScript', image: '/skillsImage/typescript.jpg' },
@@ -59,12 +59,9 @@ const roadmap = [
     title: 'Backend',
     level: 'Beginner → Advanced',
     items: [
-      { name: 'Hono', image: '/skillsImage/Hono.png' },
-      { name: 'Node.js', image: '/skillsImage/javascript.jpg' },
       { name: 'TypeScript', image: '/skillsImage/typescript.jpg' },
       { name: 'Zod', image: '/skillsImage/ZodTypeValidate.jpg' },
-      { name: 'JWT', note: 'Auth' },
-      { name: 'Auth', note: 'Security' },
+      { name: 'tRPC', image: '/skillsImage/trpc.png' },
     ],
   },
   {
@@ -72,9 +69,7 @@ const roadmap = [
     level: 'Relational & Non-Relational',
     items: [
       { name: 'MySQL', image: '/skillsImage/MySQL.jpg' },
-      { name: 'PostgreSQL', note: 'Advanced' },
       { name: 'MongoDB', image: '/skillsImage/MongoDB.jpg' },
-      { name: 'Cassandra DB', note: 'Advanced' },
       { name: 'Drizzle ORM', image: '/skillsImage/DrizzleORM.png', note: 'Studio' },
     ],
   },
@@ -99,7 +94,6 @@ const roadmap = [
     level: 'Beginner → Advanced',
     items: [
       { name: 'Vercel', note: 'Beginner' },
-      { name: 'Orbiter', note: 'Advanced' },
     ],
   },
   {
@@ -107,7 +101,6 @@ const roadmap = [
     level: 'Beginner → Advanced',
     items: [
       { name: 'Docker', image: '/skillsImage/Docker.jpg', note: 'Beginner' },
-      { name: 'Kubernetes', note: 'Advanced' },
     ],
   },
   {
@@ -116,7 +109,6 @@ const roadmap = [
     items: [
       { name: 'Git & GitHub', image: '/skillsImage/GitandGitHub.jpg' },
       { name: 'Pull Requests', note: 'AI Advanced' },
-      { name: 'GitLab', note: 'CI/CD' },
     ],
   },
   {
@@ -127,7 +119,6 @@ const roadmap = [
       { name: 'RAG', note: 'Architecture' },
       { name: 'MCP', note: 'Protocol' },
       { name: 'SLM', note: 'Small Models' },
-      { name: 'Rental GPU', note: 'Apps' },
       { name: 'AI SDK', note: 'Vercel' },
     ],
   },
@@ -136,7 +127,6 @@ const roadmap = [
     level: 'UI/UX & Prototyping',
     items: [
       { name: 'Stitch AI', note: 'Web Apps' },
-      { name: 'Figma', note: 'AI Design' },
     ],
   },
 ]
