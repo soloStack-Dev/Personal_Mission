@@ -614,9 +614,23 @@ export default function BlogPage() {
                 letterSpacing: '-0.02em',
                 textTransform: 'uppercase',
                 lineHeight: 1,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '16px',
               }}
             >
-              BHVR Stack<br />Roadmap
+              <img
+                src="/skillsImage/T3stack.png"
+                alt="T3 Stack"
+                loading="lazy"
+                style={{
+                  width: '48px',
+                  height: '48px',
+                  objectFit: 'contain',
+                  filter: 'grayscale(100%) brightness(1)',
+                }}
+              />
+              Stack<br />Roadmap
             </h2>
             <p
               style={{
