@@ -286,7 +286,7 @@ export default function HomePage() {
                 that give businesses a real edge.
               </p>
               <p style={{ fontSize: '16px', lineHeight: 1.6, color: 'var(--text-muted)', marginBottom: '12px' }}>
-                This portfolio is built with Next.js, TypeScript, tRPC, Tailwind CSS, CSS and
+                This portfolio is built with Next.js, TypeScript, oRPC, Tailwind CSS, CSS and
                 Docker — backed by MongoDB, MySQL, TanStack Query, Zustand and open-source AI
                 APIs. Clean data modeling with Drizzle ORM, RESTful APIs, responsive design and
                 production deployments come standard.

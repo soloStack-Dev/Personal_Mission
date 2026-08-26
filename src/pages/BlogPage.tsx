@@ -32,7 +32,7 @@ const skills = [
   { name: 'Docker', image: '/skillsImage/Docker.jpg' },
   { name: 'Git & GitHub', image: '/skillsImage/GitandGitHub.jpg' },
   { name: 'TanStack Query', image: '/skillsImage/TanstackQuery.png' },
-  { name: 'tRPC', image: '/skillsImage/trpc.png' },
+  { name: 'oRPC', image: '/skillsImage/orpc.jpg' },
   { name: 'Zod', image: '/skillsImage/ZodTypeValidate.jpg' },
   { name: 'Zustand', image: '/skillsImage/Zustand.png' },
   { name: 'LangChain JS', image: '/skillsImage/LangchainJS.jpg' },
@@ -61,7 +61,7 @@ const roadmap = [
     items: [
       { name: 'TypeScript', image: '/skillsImage/typescript.jpg' },
       { name: 'Zod', image: '/skillsImage/ZodTypeValidate.jpg' },
-      { name: 'tRPC', image: '/skillsImage/trpc.png' },
+      { name: 'oRPC', image: '/skillsImage/orpc.jpg' },
     ],
   },
   {

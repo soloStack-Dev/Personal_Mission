@@ -46,7 +46,7 @@ const IMAGES = [
   '/skillsImage/Docker.jpg',
   '/skillsImage/GitandGitHub.jpg',
   '/skillsImage/Bun.png',
-  '/skillsImage/trpc.png',
+  '/skillsImage/orpc.jpg',
   '/skillsImage/T3stack.png',
   '/skillsImage/nextjsAuth.png',
 ]
