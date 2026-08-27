@@ -164,12 +164,12 @@ function SkillCard({ skill }: { skill: typeof skills[0] }) {
     // Hover: reveal color + lift the card
     const handleEnter = () => {
       gsap.to(img, { filter: 'grayscale(0%) brightness(1)', duration: 0.4, ease: 'power2.out' })
-      gsap.to(card, { borderColor: '#555555', y: -2, duration: 0.2, ease: 'power2.out' })
+      gsap.to(card, { borderColor: '#BF40BF', y: -2, boxShadow: '0 0 20px rgba(191, 64, 191, 0.4)', duration: 0.2, ease: 'power2.out' })
     }
     // Leave: back to grayscale + resting position
     const handleLeave = () => {
       gsap.to(img, { filter: 'grayscale(100%) brightness(0.7)', duration: 0.4, ease: 'power2.out' })
-      gsap.to(card, { borderColor: '#2a2a2a', y: 0, duration: 0.2, ease: 'power2.out' })
+      gsap.to(card, { borderColor: '#2a2a3a', y: 0, boxShadow: '0 0 0 rgba(191, 64, 191, 0)', duration: 0.2, ease: 'power2.out' })
     }
 
     card.addEventListener('mouseenter', handleEnter)
@@ -186,14 +186,14 @@ function SkillCard({ skill }: { skill: typeof skills[0] }) {
       data-animate
       style={{
         background: 'var(--bg-card-dark)',
-        border: '1px solid #2a2a2a',
+        border: '1px solid #2a2a3a',
         padding: '12px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         aspectRatio: '1/0.85',
         cursor: 'default',
-        transition: 'border-color 0.2s ease',
+        transition: 'border-color 0.2s ease, box-shadow 0.3s ease',
         overflow: 'hidden',
       }}
     >
@@ -269,7 +269,7 @@ function RoadmapBranch({ section, index, isLast }: { section: typeof roadmap[0];
             top: 0,
             bottom: 0,
             width: '2px',
-            background: isLast ? 'transparent' : '#222',
+            background: isLast ? 'transparent' : 'linear-gradient(180deg, rgba(191,64,191,0.5), rgba(191,64,191,0.15))',
           }}
         />
         {/* Clickable node dot */}
@@ -278,8 +278,9 @@ function RoadmapBranch({ section, index, isLast }: { section: typeof roadmap[0];
           style={{
             width: '24px',
             height: '24px',
-            border: '2px solid #333',
+            border: '2px solid #BF40BF',
             background: '#0a0a0a',
+            boxShadow: '0 0 14px rgba(191, 64, 191, 0.5)',
             position: 'absolute',
             right: 0,
             top: '24px',
@@ -296,7 +297,7 @@ function RoadmapBranch({ section, index, isLast }: { section: typeof roadmap[0];
               fontWeight: 500,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              color: '#555',
+              color: 'var(--accent-pink)',
               marginBottom: '4px',
             }}
           >
@@ -312,14 +313,14 @@ function RoadmapBranch({ section, index, isLast }: { section: typeof roadmap[0];
           >
             {section.title}
           </div>
-          <div style={{ fontSize: '11px', color: '#666', marginTop: '4px' }}>{section.level}</div>
+          <div style={{ fontSize: '11px', color: 'var(--accent-lavender)', marginTop: '4px', opacity: 0.9 }}>{section.level}</div>
         </div>
       </div>
 
       {/* Skills column: wrap of chips */}
       <div
         style={{
-          borderLeft: isLast ? 'none' : '1px solid #1a1a1a',
+          borderLeft: isLast ? 'none' : '1px solid #2a2a44',
           paddingLeft: '32px',
           paddingBottom: '32px',
           display: 'flex',
@@ -338,8 +339,8 @@ function RoadmapBranch({ section, index, isLast }: { section: typeof roadmap[0];
               alignItems: 'center',
               gap: '10px',
               padding: '10px 14px',
-              border: '1px solid #1a1a1a',
-              background: '#0a0a0a',
+              border: '1px solid #28283c',
+              background: '#0d0d14',
               transition: 'all 0.3s ease',
               cursor: 'pointer',
               flex: '0 0 auto',
@@ -378,8 +379,8 @@ function RoadmapBranch({ section, index, isLast }: { section: typeof roadmap[0];
               <span
                 style={{
                   fontSize: '9px',
-                  color: '#444',
-                  border: '1px solid #222',
+                  color: 'var(--accent-lavender)',
+                  border: '1px solid #3a2a5a',
                   padding: '2px 6px',
                   letterSpacing: '0.05em',
                   textTransform: 'uppercase',
@@ -515,6 +516,7 @@ export default function BlogPage() {
             }}
           >
             <h2
+              className="text-gradient"
               style={{
                 fontSize: 'clamp(28px, 3vw, 42px)',
                 fontWeight: 800,
@@ -543,7 +545,7 @@ export default function BlogPage() {
               <div
                 key={article.title}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--bg-secondary)'
+                  e.currentTarget.style.background = 'rgba(191, 64, 191, 0.08)'
                   const title = e.currentTarget.querySelector('.article-title') as HTMLElement
                   if (title) title.style.transform = 'translateX(8px)'
                 }}
@@ -556,7 +558,7 @@ export default function BlogPage() {
                   display: 'flex',
                   alignItems: 'center',
                   padding: '20px 0',
-                  borderBottom: '1px solid #222',
+                  borderBottom: '1px solid #222238',
                   cursor: 'pointer',
                   transition: 'background 0.25s ease',
                   gap: '24px',
@@ -601,13 +603,14 @@ export default function BlogPage() {
                 fontWeight: 500,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: '#666',
+                color: 'var(--accent-pink)',
                 marginBottom: '16px',
               }}
             >
               LEARNING PATH
             </span>
             <h2
+              className="text-gradient"
               style={{
                 fontSize: 'clamp(28px, 4vw, 48px)',
                 fontWeight: 800,
@@ -670,7 +673,7 @@ export default function BlogPage() {
                 fontWeight: 500,
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
-                color: 'var(--text-muted)',
+                color: 'var(--accent-lavender)',
                 marginBottom: '16px',
               }}
             >
@@ -695,8 +698,9 @@ export default function BlogPage() {
                 display: 'flex',
                 maxWidth: '400px',
                 margin: '0 auto',
-                border: '1px solid var(--border-subtle)',
-                background: '#111',
+                border: '1px solid var(--accent-purple)',
+                background: '#0d0d14',
+                boxShadow: '0 0 24px rgba(191, 64, 191, 0.2)',
               }}
             >
               <input
@@ -726,15 +730,15 @@ export default function BlogPage() {
                 onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
                 style={{
                   background: 'transparent',
-                  border: 'none',
-                  color: 'var(--text-primary)',
+                  border: '1px solid var(--accent-purple)',
+                  color: 'var(--accent-pink)',
                   padding: '16px 20px',
                   cursor: 'pointer',
                   fontSize: '11px',
                   fontWeight: 600,
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
-                  transition: 'opacity 0.2s ease',
+                  transition: 'opacity 0.2s ease, background 0.2s ease',
                   whiteSpace: 'nowrap',
                 }}
               >
@@ -744,10 +748,10 @@ export default function BlogPage() {
 
             {/* Validation / success messages */}
             {emailError && (
-              <p style={{ color: '#ff4444', fontSize: '12px', marginTop: '12px' }}>{emailError}</p>
+              <p style={{ color: 'var(--accent-pink)', fontSize: '12px', marginTop: '12px' }}>{emailError}</p>
             )}
             {subscribed && (
-              <p style={{ color: '#44ff44', fontSize: '12px', marginTop: '12px' }}>Thank you for subscribing!</p>
+              <p style={{ color: '#44ffaa', fontSize: '12px', marginTop: '12px' }}>Thank you for subscribing!</p>
             )}
           </div>
         </div>
@@ -756,8 +760,9 @@ export default function BlogPage() {
       {/* Hover + responsive styles for the roadmap */}
       <style>{`
         .roadmap-skill:hover {
-          border-color: #444 !important;
-          background: #111 !important;
+          border-color: #BF40BF !important;
+          background: #15151f !important;
+          box-shadow: 0 0 16px rgba(191, 64, 191, 0.35) !important;
         }
         .roadmap-skill:hover img {
           filter: grayscale(0%) brightness(1) !important;
@@ -766,13 +771,13 @@ export default function BlogPage() {
           color: var(--text-primary) !important;
         }
         .roadmap-skill:hover span:last-child {
-          border-color: #444 !important;
-          color: #aaa !important;
+          border-color: #BF40BF !important;
+          color: var(--accent-lavender) !important;
         }
         .roadmap-node:hover {
-          border-color: var(--text-primary) !important;
-          background: var(--text-primary) !important;
-          box-shadow: 0 0 12px rgba(255,255,255,0.15);
+          border-color: #FF1493 !important;
+          background: #FF1493 !important;
+          box-shadow: 0 0 18px rgba(255, 20, 147, 0.7);
         }
         @media (max-width: 768px) {
           .roadmap-branch {

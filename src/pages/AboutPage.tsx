@@ -55,7 +55,8 @@ export default function AboutPage() {
                 aspectRatio: '3/4',
                 objectFit: 'cover',
                 filter: 'grayscale(100%) brightness(0.8)',
-                transition: 'filter 0.5s ease',
+                transition: 'filter 0.5s ease, box-shadow 0.5s ease',
+                boxShadow: '0 0 40px rgba(255, 20, 147, 0.3), 0 0 80px rgba(230, 230, 250, 0.15)',
               }}
             />
             <span
@@ -67,7 +68,7 @@ export default function AboutPage() {
                 fontWeight: 500,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: '#666',
+                color: '#7a6a9a',
               }}
             >
               WORKSPACE_01 // SYSTEM_ALPHA
@@ -84,7 +85,7 @@ export default function AboutPage() {
                 fontWeight: 500,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: '#666',
+                color: 'var(--accent-lavender)',
                 marginBottom: 'var(--space-md)',
               }}
             >
@@ -93,6 +94,7 @@ export default function AboutPage() {
 
             <h1
               data-hero-headline
+              className="text-gradient"
               style={{
                 fontSize: 'clamp(36px, 5vw, 56px)',
                 fontWeight: 800,
@@ -142,7 +144,7 @@ export default function AboutPage() {
                 fontWeight: 500,
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
-                color: '#666',
+                color: 'var(--accent-lavender)',
                 marginBottom: 'var(--space-sm)',
               }}
             >
@@ -152,7 +154,7 @@ export default function AboutPage() {
             {/* Two numbered focus areas */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-lg)' }}>
               <div>
-                <div style={{ fontSize: '24px', fontWeight: 700 }}>01</div>
+                <div className="text-gradient" style={{ fontSize: '24px', fontWeight: 700 }}>01</div>
                 <div
                   style={{
                     fontSize: '11px',
@@ -167,7 +169,7 @@ export default function AboutPage() {
                 </div>
               </div>
               <div>
-                <div style={{ fontSize: '24px', fontWeight: 700 }}>02</div>
+                <div className="text-gradient" style={{ fontSize: '24px', fontWeight: 700 }}>02</div>
                 <div
                   style={{
                     fontSize: '11px',
@@ -198,6 +200,7 @@ export default function AboutPage() {
             }}
           >
             <h2
+              className="text-gradient"
               style={{
                 fontSize: 'clamp(28px, 4vw, 48px)',
                 fontWeight: 800,
@@ -212,7 +215,7 @@ export default function AboutPage() {
                 fontSize: '11px',
                 fontWeight: 500,
                 letterSpacing: '0.1em',
-                color: '#666',
+                color: 'var(--accent-lavender)',
                 textTransform: 'uppercase',
               }}
             >
@@ -246,7 +249,7 @@ export default function AboutPage() {
                 >
                   {/* Left: number + label + title */}
                   <div>
-                    <div style={{ fontSize: '11px', color: '#666', marginBottom: '4px' }}>{item.num}</div>
+                    <div className="text-gradient" style={{ fontSize: '11px', marginBottom: '4px' }}>{item.num}</div>
                     <div
                       style={{
                         fontSize: '11px',

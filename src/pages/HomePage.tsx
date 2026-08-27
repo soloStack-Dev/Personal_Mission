@@ -56,13 +56,15 @@ function ExpertiseBlock({ title, description, index }: { title: string; descript
       onMouseLeave={(e) => (e.currentTarget.style.transform = 'scale(1)')}
       style={{
         background: isEven ? 'var(--bg-card-dark)' : 'var(--bg-card-light)',
-        color: isEven ? 'var(--text-primary)' : 'var(--text-inverse)',
+        color: isEven ? 'var(--text-primary)' : 'var(--text-primary)',
         padding: '32px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         minHeight: '220px',
-        transition: 'transform 0.3s ease',
+        border: '1px solid var(--border-subtle)',
+        boxShadow: '0 0 24px rgba(191, 64, 191, 0.08)',
+        transition: 'transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
         cursor: 'default',
       }}
     >
@@ -81,7 +83,7 @@ function ExpertiseBlock({ title, description, index }: { title: string; descript
         style={{
           fontSize: '14px',
           lineHeight: 1.6,
-          color: isEven ? 'var(--text-body)' : 'var(--text-muted-dark)',
+          color: isEven ? 'var(--text-body)' : 'var(--text-muted)',
           marginTop: '16px',
         }}
       >
@@ -131,7 +133,7 @@ function SubscribeWidget() {
           fontSize: '11px',
           fontWeight: 500,
           letterSpacing: '0.1em',
-          color: 'var(--text-muted)',
+          color: 'var(--accent-lavender)',
           textTransform: 'uppercase',
         }}
       >
@@ -139,7 +141,7 @@ function SubscribeWidget() {
       </span>
 
       {subStatus === 'success' ? (
-        <p style={{ fontSize: '13px', color: 'var(--text-primary)' }}>Subscribed! You'll hear from me.</p>
+        <p style={{ fontSize: '13px', color: 'var(--accent-pink)' }}>Subscribed! You'll hear from me.</p>
       ) : (
         <div style={{ display: 'flex', border: '1px solid var(--border-subtle)', background: 'transparent', overflow: 'hidden' }}>
           <input
@@ -184,7 +186,7 @@ function SubscribeWidget() {
         </div>
       )}
 
-      {subStatus === 'error' && <p style={{ fontSize: '11px', color: '#ff4444' }}>Failed. Try again.</p>}
+      {subStatus === 'error' && <p style={{ fontSize: '11px', color: 'var(--accent-pink)' }}>Failed. Try again.</p>}
     </>
   )
 }
@@ -232,7 +234,8 @@ export default function HomePage() {
                 aspectRatio: '3/4',
                 objectFit: 'cover',
                 filter: 'grayscale(100%) brightness(0.8)',
-                transition: 'filter 0.5s ease',
+                transition: 'filter 0.5s ease, box-shadow 0.5s ease',
+                boxShadow: '0 0 40px rgba(191, 64, 191, 0.35), 0 0 80px rgba(230, 230, 250, 0.15)',
               }}
             />
           </div>
@@ -266,7 +269,7 @@ export default function HomePage() {
               </span>
               <span className="word" style={{ display: 'block' }}>{'Building the '}</span>
               <span className="word" style={{ display: 'block' }}>{'Future with '}</span>
-              <span className="word" style={{ display: 'block' }}>{'Code & AI'}</span>
+              <span className="word text-gradient" style={{ display: 'block' }}>{'Code & AI'}</span>
             </h1>
 
             <div
@@ -308,21 +311,22 @@ export default function HomePage() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   padding: '14px 28px',
-                  background: 'var(--text-primary)',
-                  color: 'var(--text-inverse)',
+                  background: 'linear-gradient(90deg, #FF1493, #BF40BF)',
+                  color: '#ffffff',
                   fontSize: '12px',
                   fontWeight: 600,
                   letterSpacing: '0.05em',
                   textTransform: 'uppercase',
                   textDecoration: 'none',
-                  transition: 'opacity 0.2s ease',
+                  transition: 'opacity 0.2s ease, box-shadow 0.3s ease',
+                  boxShadow: '0 0 20px rgba(255, 20, 147, 0.35)',
                 }}
               >
                 VIEW WORK
               </Link>
               <Link
                 to="/about"
-                onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--text-primary)')}
+                onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--accent-pink)')}
                 onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-subtle)')}
                 style={{
                   display: 'inline-flex',
@@ -396,7 +400,7 @@ export default function HomePage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'var(--bg-secondary)'
+                  e.currentTarget.style.background = 'rgba(191, 64, 191, 0.08)'
                   const title = e.currentTarget.querySelector('.project-title') as HTMLElement
                   if (title) title.style.transform = 'translateX(8px)'
                 }}
@@ -410,7 +414,7 @@ export default function HomePage() {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   padding: '24px 0',
-                  borderBottom: '1px solid #222',
+                  borderBottom: '1px solid #222238',
                   textDecoration: 'none',
                   transition: 'background 0.25s ease',
                   cursor: 'pointer',
@@ -466,6 +470,7 @@ export default function HomePage() {
           {/* Link to the full projects page */}
           <Link
             to="/projects"
+            className="glow-hover"
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -474,7 +479,7 @@ export default function HomePage() {
               fontWeight: 600,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
-              color: 'var(--text-primary)',
+              color: 'var(--accent-pink)',
               textDecoration: 'underline',
               textUnderlineOffset: '4px',
             }}
@@ -516,6 +521,7 @@ export default function HomePage() {
             </p>
             <Link
               to="/blog"
+              className="glow-hover"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -524,7 +530,7 @@ export default function HomePage() {
                 fontWeight: 600,
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
-                color: 'var(--text-primary)',
+                color: 'var(--accent-purple)',
                 textDecoration: 'underline',
                 textUnderlineOffset: '4px',
               }}

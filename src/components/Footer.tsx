@@ -38,7 +38,7 @@ export default function Footer({ variant = 'home' }: FooterProps) {
   // Compact layout for inner pages
   if (currentVariant !== 'home') {
     return (
-      <footer style={{ background: 'var(--bg-secondary)', borderTop: '1px solid #1a1a1a' }}>
+      <footer style={{ background: 'var(--bg-secondary)', borderTop: '1px solid #25253a' }}>
         <div
           className="container"
           style={{
@@ -60,7 +60,7 @@ export default function Footer({ variant = 'home' }: FooterProps) {
 
   // Larger layout for the home page
   return (
-    <footer style={{ background: 'var(--bg-secondary)' }}>
+    <footer style={{ background: 'var(--bg-secondary)', borderTop: '1px solid #25253a' }}>
       <div
         className="container"
         style={{
@@ -90,12 +90,14 @@ export default function Footer({ variant = 'home' }: FooterProps) {
 function Brand() {
   return (
     <div
+      className="text-gradient"
       style={{
         fontWeight: 800,
         fontSize: '18px',
         letterSpacing: '0.05em',
         textTransform: 'uppercase',
         marginBottom: '12px',
+        display: 'inline-block',
       }}
     >
       Byte_Foundry__
@@ -178,7 +180,7 @@ function SocialLinks() {
               : undefined
           }
           onMouseEnter={(e) => {
-            e.currentTarget.style.color = 'var(--text-primary)'
+            e.currentTarget.style.color = 'var(--accent-pink)'
             e.currentTarget.style.textDecoration = 'underline'
           }}
           onMouseLeave={(e) => {
@@ -254,7 +256,7 @@ function ShareLinks() {
               window.open(link.build(current), '_blank', 'noopener,noreferrer')
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.color = 'var(--text-primary)'
+              e.currentTarget.style.color = 'var(--accent-pink)'
               e.currentTarget.style.textDecoration = 'underline'
             }}
             onMouseLeave={(e) => {

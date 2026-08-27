@@ -247,7 +247,7 @@ export default function DustImageReveal() {
 
       // Clear + paint the solid background
       ctx.clearRect(0, 0, cW, cH)
-      ctx.fillStyle = '#0a0a0a'
+      ctx.fillStyle = '#0d0d14'
       ctx.fillRect(0, 0, cW, cH)
 
       const phase = frame % CYCLE_FRAMES
@@ -346,10 +346,11 @@ export default function DustImageReveal() {
         maxWidth: '400px',
         aspectRatio: '1',
         position: 'relative',
-        border: active ? '1px solid #333' : '1px solid #1a1a1a',
-        background: '#0a0a0a',
+        border: active ? '1px solid var(--accent-purple)' : '1px solid #2a2a3a',
+        background: '#0d0d14',
+        boxShadow: active ? '0 0 24px rgba(191, 64, 191, 0.35)' : 'none',
         overflow: 'hidden',
-        transition: 'border-color 0.6s ease',
+        transition: 'border-color 0.6s ease, box-shadow 0.6s ease',
         cursor: 'pointer',
       }}
     >
@@ -374,7 +375,7 @@ export default function DustImageReveal() {
           fontWeight: 500,
           letterSpacing: '0.08em',
           textTransform: 'uppercase',
-          color: active ? '#888' : '#444',
+          color: active ? 'var(--accent-lavender)' : '#6a6a78',
           pointerEvents: 'none',
           transition: 'color 0.6s ease',
         }}

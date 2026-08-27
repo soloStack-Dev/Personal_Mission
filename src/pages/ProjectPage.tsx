@@ -157,14 +157,15 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
             onMouseLeave={(e) => (e.currentTarget.style.opacity = '1')}
             style={{
               padding: '12px 28px',
-              background: 'var(--text-primary)',
-              color: 'var(--text-inverse)',
+              background: 'linear-gradient(90deg, #FF1493, #BF40BF)',
+              color: '#ffffff',
               fontSize: '11px',
               fontWeight: 600,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
               textDecoration: 'none',
-              transition: 'opacity 0.2s ease',
+              transition: 'opacity 0.2s ease, box-shadow 0.3s ease',
+              boxShadow: '0 0 20px rgba(255, 20, 147, 0.35)',
             }}
           >
             PREVIEW
@@ -210,7 +211,7 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
         href={project.link}
         target="_blank"
         rel="noopener noreferrer"
-        onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--text-primary)')}
+        onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--accent-pink)')}
         onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-hover)')}
         style={{
           display: 'inline-flex',
@@ -246,6 +247,7 @@ export default function ProjectPage() {
         <div className="container">
           <h1
             data-hero-headline
+            className="text-gradient"
             style={{
               fontSize: 'clamp(40px, 5vw, 72px)',
               fontWeight: 800,
@@ -303,6 +305,7 @@ export default function ProjectPage() {
         >
           <div>
             <h2
+              className="text-gradient"
               style={{
                 fontSize: 'clamp(28px, 3vw, 42px)',
                 fontWeight: 800,
@@ -331,7 +334,8 @@ export default function ProjectPage() {
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              transition: 'gap 0.2s ease',
+              color: 'var(--accent-pink)',
+              transition: 'gap 0.2s ease, color 0.2s ease',
             }}
           >
             CONTACT <span>→</span>

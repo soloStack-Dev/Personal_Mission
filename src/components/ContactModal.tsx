@@ -10,23 +10,29 @@ import { useStore } from '../store/useStore'
  */
 type FormStatus = 'idle' | 'sending' | 'success' | 'error'
 
-/** Shared input/textarea look (monochrome, minimal). */
+/** Shared input/textarea look (dark, purple-accented minimal). */
 const inputStyle: React.CSSProperties = {
   width: '100%',
-  background: '#111111',
-  border: '1px solid #222222',
+  background: '#0d0d14',
+  border: '1px solid #2a2a3a',
   color: 'var(--text-primary)',
   padding: '14px 16px',
   fontSize: '13px',
   fontFamily: 'var(--font-sans)',
   outline: 'none',
-  transition: 'border-color 0.2s ease',
+  transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
 }
 
-/** Turn the input border lighter on focus, back to normal on blur. */
+/** Highlight the input border on focus, back to normal on blur. */
 const focusHandlers = {
-  onFocus: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => (e.currentTarget.style.borderColor = '#444'),
-  onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => (e.currentTarget.style.borderColor = '#222'),
+  onFocus: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.currentTarget.style.borderColor = 'var(--accent-purple)'
+    e.currentTarget.style.boxShadow = '0 0 12px rgba(191, 64, 191, 0.3)'
+  },
+  onBlur: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.currentTarget.style.borderColor = '#2a2a3a'
+    e.currentTarget.style.boxShadow = 'none'
+  },
 }
 
 /** Form field label (small uppercase caption). */
@@ -106,7 +112,7 @@ export default function ContactModal() {
       style={{
         position: 'fixed',
         inset: 0,
-        background: 'rgba(0, 0, 0, 0.8)',
+        background: 'rgba(8, 0, 18, 0.85)',
         backdropFilter: 'blur(8px)',
         display: 'flex',
         alignItems: 'center',
@@ -119,8 +125,9 @@ export default function ContactModal() {
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
-          background: '#0a0a0a',
-          border: '1px solid #1a1a1a',
+          background: '#0d0d14',
+          border: '1px solid var(--accent-purple)',
+          boxShadow: '0 0 40px rgba(255, 20, 147, 0.25)',
           width: '100%',
           maxWidth: '480px',
           padding: '40px',
@@ -138,7 +145,7 @@ export default function ContactModal() {
           <h2 style={{ fontSize: '18px', fontWeight: 700, letterSpacing: '-0.01em' }}>Send a Message</h2>
           <button
             onClick={closeContactModal}
-            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text-primary)')}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--accent-pink)')}
             onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
             style={{
               background: 'none',
@@ -158,7 +165,7 @@ export default function ContactModal() {
         {/* After a successful send, show a thank-you instead of the form */}
         {status === 'success' ? (
           <div style={{ textAlign: 'center', padding: '40px 0' }}>
-            <p style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>Message Sent</p>
+            <p className="text-gradient" style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>Message Sent</p>
             <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Thank you! I'll get back to you soon.</p>
           </div>
         ) : (
@@ -204,7 +211,7 @@ export default function ContactModal() {
 
             {/* Inline error message on failure */}
             {status === 'error' && (
-              <p style={{ fontSize: '12px', color: '#ff4444' }}>Failed to send. Please try again.</p>
+              <p style={{ fontSize: '12px', color: 'var(--accent-pink)' }}>Failed to send. Please try again.</p>
             )}
 
             <button
@@ -219,8 +226,8 @@ export default function ContactModal() {
               style={{
                 width: '100%',
                 padding: '14px',
-                background: 'var(--text-primary)',
-                color: 'var(--text-inverse)',
+                background: 'linear-gradient(90deg, #FF1493, #BF40BF)',
+                color: '#ffffff',
                 border: 'none',
                 fontSize: '12px',
                 fontWeight: 600,
@@ -228,8 +235,9 @@ export default function ContactModal() {
                 textTransform: 'uppercase',
                 cursor: status === 'sending' ? 'not-allowed' : 'pointer',
                 opacity: status === 'sending' ? 0.6 : 1,
-                transition: 'opacity 0.2s ease',
+                transition: 'opacity 0.2s ease, box-shadow 0.3s ease',
                 fontFamily: 'var(--font-sans)',
+                boxShadow: '0 0 20px rgba(255, 20, 147, 0.35)',
               }}
             >
               {status === 'sending' ? 'SENDING...' : 'SEND MESSAGE'}

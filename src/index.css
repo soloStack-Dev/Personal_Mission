@@ -8,24 +8,33 @@
 
 /* ------------------------------------------------------------
    Design tokens — the whole site's palette, spacing, fonts.
-   Every color is a shade of black/white/gray (monochrome theme).
+   Deep blacks with vibrant hot pink, electric purple and subtle
+   lavender glow accents.
    ------------------------------------------------------------ */
 :root {
-  /* Colors */
+  /* Colors — deep black backgrounds */
   --bg-primary: #000000;        /* page background */
   --bg-secondary: #0a0a0a;      /* section/footer background */
-  --bg-card-dark: #1a1a1a;      /* dark card surface */
-  --bg-card-light: #ffffff;     /* light card surface */
-  --bg-card-light-alt: #f0f0f0;
+  --bg-card-dark: #131318;      /* dark card surface (purple-tinted black) */
+  --bg-card-light: #1f1f2e;     /* light card surface (purple-tinted) */
+  --bg-card-light-alt: #26263a;
   --text-primary: #ffffff;      /* primary text (light on dark bg) */
   --text-inverse: #000000;      /* text on light/white surfaces */
-  --text-muted: #888888;
-  --text-muted-dark: #666666;
-  --text-body: #aaaaaa;         /* body copy */
-  --border-subtle: #333333;
-  --border-hover: #555555;
+  --text-muted: #9a9aa6;
+  --text-muted-dark: #7a7a88;
+  --text-body: #b8b8c4;         /* body copy */
+  --border-subtle: #2a2a3a;
+  --border-hover: #6a4ad0;
+
+  /* Accent palette */
   --accent: #ffffff;
-  --ghost-text: #0d0d0d;        /* giant faint background words */
+  --accent-pink: #FF1493;       /* vibrant hot pink */
+  --accent-purple: #BF40BF;     /* electric purple */
+  --accent-lavender: #E6E6FA;   /* subtle lavender glow */
+  --accent-gradient: linear-gradient(90deg, #FF1493, #BF40BF, #E6E6FA);
+  --accent-glow: 0 0 24px rgba(255, 20, 147, 0.45);
+  --accent-glow-purple: 0 0 24px rgba(191, 64, 191, 0.45);
+  --ghost-text: #0d0d12;        /* giant faint background words */
 
   /* Typography */
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
@@ -135,7 +144,7 @@ img {
    Native UI details — scrollbar, selection, focus.
    ------------------------------------------------------------ */
 
-/* Slim dark scrollbar */
+/* Slim dark scrollbar (purple-tinted thumb) */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -143,23 +152,46 @@ img {
   background: var(--bg-primary);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--border-subtle);
+  background: linear-gradient(var(--accent-pink), var(--accent-purple));
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--border-hover);
+  background: var(--accent-purple);
 }
 
-/* Selection color */
+/* Selection with a hot-pink tint */
 ::selection {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 20, 147, 0.6);
   color: var(--text-primary);
 }
 
-/* Visible focus ring for keyboard navigation */
+/* Visible focus ring for keyboard navigation (lavender glow) */
 :focus-visible {
-  outline: 1px solid var(--border-hover);
+  outline: 1px solid var(--accent-purple);
   outline-offset: 2px;
+  box-shadow: 0 0 0 3px rgba(230, 230, 250, 0.25);
+}
+
+/* ------------------------------------------------------------
+   Accent helpers — gradient text and glow.
+   ------------------------------------------------------------ */
+
+/* Gradient text: hot pink → electric purple → lavender */
+.text-gradient {
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Lavender / pink glow on hover for links and buttons */
+.glow-hover {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.glow-hover:hover {
+  box-shadow: var(--accent-glow);
+  transform: translateY(-1px);
 }
 
 /* ------------------------------------------------------------

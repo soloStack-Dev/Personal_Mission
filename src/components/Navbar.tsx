@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import { useStore } from '../store/useStore'
 
@@ -30,8 +30,8 @@ function ResumeButton({ small = false }: { small?: boolean }) {
         alignItems: 'center',
         justifyContent: 'center',
         gap: '6px',
-        background: 'var(--text-primary)',
-        color: 'var(--text-inverse)',
+        background: 'linear-gradient(90deg, #FF1493, #BF40BF)',
+        color: '#ffffff',
         fontSize: small ? '12px' : '13px',
         fontWeight: 600,
         letterSpacing: '0.05em',
@@ -60,6 +60,9 @@ function ResumeButton({ small = false }: { small?: boolean }) {
 export default function Navbar() {
   const { isMobileMenuOpen, toggleMobileMenu, closeMobileMenu, isScrolled, setScrolled } = useStore()
   const location = useLocation()
+  // Whether the overlay is currently present in the DOM. Stays true during
+  // the closing fade so the links can fade out smoothly before unmounting.
+  const [overlayVisible, setOverlayVisible] = useState(false)
 
   // Listen to the window scroll position so the navbar can gain a
   // solid background after the user scrolls past 50px.
@@ -69,10 +72,24 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [setScrolled])
 
+  // Mount the overlay when the menu opens. On close, keep it mounted
+  // long enough for the fade-out, then remove it from the DOM.
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout> | undefined
+    if (isMobileMenuOpen) {
+      setOverlayVisible(true)
+    } else {
+      timer = setTimeout(() => setOverlayVisible(false), 400)
+    }
+    return () => {
+      if (timer) clearTimeout(timer)
+    }
+  }, [isMobileMenuOpen])
+
   // Always close the mobile drawer when navigating to another route.
   useEffect(() => {
-    closeMobileMenu()
-  }, [location.pathname, closeMobileMenu])
+    if (isMobileMenuOpen) closeMobileMenu()
+  }, [location.pathname, closeMobileMenu, isMobileMenuOpen])
 
   return (
     <nav
@@ -102,13 +119,14 @@ export default function Navbar() {
         {/* Brand / logo */}
         <NavLink
           to="/"
+          className="text-gradient"
           style={{
             fontFamily: 'var(--font-sans)',
             fontWeight: 800,
             fontSize: '18px',
             letterSpacing: '0.05em',
-            color: 'var(--text-primary)',
             textTransform: 'uppercase',
+            textDecoration: 'none',
           }}
         >
           Byte_Foundry__
@@ -124,7 +142,7 @@ export default function Navbar() {
                 fontSize: '12px',
                 fontWeight: 500,
                 letterSpacing: '0.08em',
-                color: isActive ? 'var(--text-primary)' : 'var(--text-muted)',
+                color: isActive ? 'var(--accent-pink)' : 'var(--text-muted)',
                 textTransform: 'uppercase',
                 textDecoration: 'none',
                 position: 'relative',
@@ -143,7 +161,8 @@ export default function Navbar() {
                         left: 0,
                         right: 0,
                         height: '1px',
-                        background: 'var(--text-primary)',
+                        background: 'var(--accent-gradient)',
+                        boxShadow: '0 0 8px rgba(255, 20, 147, 0.6)',
                       }}
                     />
                   )}
@@ -200,8 +219,12 @@ export default function Navbar() {
         </button>
       </div>
 
-      {/* Mobile drawer — full-screen overlay below the navbar */}
-      {isMobileMenuOpen && (
+      {/* Mobile drawer — full-screen overlay below the navbar.
+          Always mounted while open OR fading out so the links can animate.
+          The whole overlay fades in/out with opacity; each nav link (plus the
+          resume button) then fades in with a small stagger, and fades back
+          out on close. */}
+      {overlayVisible && (
         <div
           className="mobile-menu-overlay"
           style={{
@@ -210,7 +233,7 @@ export default function Navbar() {
             left: 0,
             right: 0,
             bottom: 0,
-            background: '#000000',
+            background: 'rgba(3, 0, 8, 0.97)',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'flex-start',
@@ -221,32 +244,47 @@ export default function Navbar() {
             paddingRight: 'var(--container-padding)',
             zIndex: 99,
             overflowY: 'auto',
+            opacity: isMobileMenuOpen ? 1 : 0,
+            pointerEvents: isMobileMenuOpen ? 'auto' : 'none',
+            transition: 'opacity 0.35s ease',
           }}
         >
           {navLinks.map((link, i) => (
             <NavLink
               key={link.to}
               to={link.to}
+              className="menu-link"
               style={({ isActive }) => ({
                 display: 'flex',
                 alignItems: 'center',
                 width: '100%',
                 padding: '20px 0',
-                borderBottom: i < navLinks.length - 1 ? '1px solid #1a1a1a' : 'none',
+                borderBottom: i < navLinks.length - 1 ? '1px solid #25253a' : 'none',
                 fontSize: '18px',
                 fontWeight: 600,
                 letterSpacing: '0.08em',
-                color: isActive ? 'var(--text-primary)' : 'var(--text-muted)',
+                color: isActive ? 'var(--accent-pink)' : 'var(--text-muted)',
                 textTransform: 'uppercase',
                 textDecoration: 'none',
-                transition: 'color 0.2s ease',
+                opacity: isMobileMenuOpen ? 1 : 0,
+                transform: isMobileMenuOpen ? 'translateY(0)' : 'translateY(8px)',
+                transition: `opacity 0.3s ease ${i * 0.06}s, transform 0.3s ease ${i * 0.06}s, color 0.2s ease`,
               })}
             >
               {link.label}
             </NavLink>
           ))}
 
-          <ResumeButton />
+          <div
+            className="menu-link"
+            style={{
+              opacity: isMobileMenuOpen ? 1 : 0,
+              transform: isMobileMenuOpen ? 'translateY(0)' : 'translateY(8px)',
+              transition: `opacity 0.3s ease ${navLinks.length * 0.06}s, transform 0.3s ease ${navLinks.length * 0.06}s`,
+            }}
+          >
+            <ResumeButton />
+          </div>
         </div>
       )}
 
