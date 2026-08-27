@@ -87,9 +87,11 @@ export default function Navbar() {
   }, [isMobileMenuOpen])
 
   // Always close the mobile drawer when navigating to another route.
+  const pathname = location.pathname
   useEffect(() => {
-    if (isMobileMenuOpen) closeMobileMenu()
-  }, [location.pathname, closeMobileMenu, isMobileMenuOpen])
+    closeMobileMenu()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pathname])
 
   return (
     <nav
