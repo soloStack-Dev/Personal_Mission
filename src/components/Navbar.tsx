@@ -94,6 +94,7 @@ export default function Navbar() {
   }, [pathname])
 
   return (
+    <>
     <nav
       style={{
         position: 'fixed',
@@ -220,83 +221,88 @@ export default function Navbar() {
           />
         </button>
       </div>
+    </nav>
 
-      {/* Mobile drawer — full-screen overlay below the navbar.
-          Always mounted while open OR fading out so the links can animate.
-          The whole overlay fades in/out with opacity; each nav link (plus the
-          resume button) then fades in with a small stagger, and fades back
-          out on close. */}
-      {overlayVisible && (
-        <div
-          className="mobile-menu-overlay"
-          style={{
-            position: 'fixed',
-            top: '64px',
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(3, 0, 8, 0.97)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            justifyContent: 'flex-start',
-            paddingTop: '48px',
-            paddingBottom: '48px',
-            paddingLeft: 'var(--container-padding)',
-            paddingRight: 'var(--container-padding)',
-            zIndex: 99,
-            overflowY: 'auto',
-            opacity: isMobileMenuOpen ? 1 : 0,
-            pointerEvents: isMobileMenuOpen ? 'auto' : 'none',
-            transition: 'opacity 0.35s ease',
-          }}
-        >
-          {navLinks.map((link, i) => (
-            <NavLink
-              key={link.to}
-              to={link.to}
-              className="menu-link"
-              style={({ isActive }) => ({
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%',
-                padding: '20px 0',
-                borderBottom: i < navLinks.length - 1 ? '1px solid #25253a' : 'none',
-                fontSize: '18px',
-                fontWeight: 600,
-                letterSpacing: '0.08em',
-                color: isActive ? 'var(--accent-pink)' : 'var(--text-muted)',
-                textTransform: 'uppercase',
-                textDecoration: 'none',
-                opacity: isMobileMenuOpen ? 1 : 0,
-                transform: isMobileMenuOpen ? 'translateY(0)' : 'translateY(8px)',
-                transition: `opacity 0.3s ease ${i * 0.06}s, transform 0.3s ease ${i * 0.06}s, color 0.2s ease`,
-              })}
-            >
-              {link.label}
-            </NavLink>
-          ))}
-
-          <div
+    {/* Mobile drawer — full-screen overlay below the navbar.
+        Rendered as a SIBLING of <nav> (not a child) so it is not confined
+        to the navbar's box: the navbar uses backdrop-filter / transform,
+        which would otherwise make this position:fixed element resolve its
+        size against the 64px-tall <nav> instead of the viewport. As a
+        sibling it reliably spans the full viewport width and height even
+        after the user scrolls. */}
+    {overlayVisible && (
+      <div
+        className="mobile-menu-overlay"
+        style={{
+          position: 'fixed',
+          top: '64px',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(3, 0, 8, 0.97)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-start',
+          justifyContent: 'flex-start',
+          paddingTop: '48px',
+          paddingBottom: '48px',
+          paddingLeft: 'var(--container-padding)',
+          paddingRight: 'var(--container-padding)',
+          zIndex: 99,
+          overflowY: 'auto',
+          width: '100%',
+          minHeight: '100%',
+          opacity: isMobileMenuOpen ? 1 : 0,
+          pointerEvents: isMobileMenuOpen ? 'auto' : 'none',
+          transition: 'opacity 0.35s ease',
+        }}
+      >
+        {navLinks.map((link, i) => (
+          <NavLink
+            key={link.to}
+            to={link.to}
             className="menu-link"
-            style={{
+            style={({ isActive }) => ({
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+              padding: '20px 0',
+              borderBottom: i < navLinks.length - 1 ? '1px solid #25253a' : 'none',
+              fontSize: '18px',
+              fontWeight: 600,
+              letterSpacing: '0.08em',
+              color: isActive ? 'var(--accent-pink)' : 'var(--text-muted)',
+              textTransform: 'uppercase',
+              textDecoration: 'none',
               opacity: isMobileMenuOpen ? 1 : 0,
               transform: isMobileMenuOpen ? 'translateY(0)' : 'translateY(8px)',
-              transition: `opacity 0.3s ease ${navLinks.length * 0.06}s, transform 0.3s ease ${navLinks.length * 0.06}s`,
-            }}
+              transition: `opacity 0.3s ease ${i * 0.06}s, transform 0.3s ease ${i * 0.06}s, color 0.2s ease`,
+            })}
           >
-            <ResumeButton />
-          </div>
-        </div>
-      )}
+            {link.label}
+          </NavLink>
+        ))}
 
-      {/* Responsive rules: swap the desktop bar for the hamburger below 768px */}
-      <style>{`
-        @media (max-width: 768px) {
-          .desktop-nav { display: none !important; }
-          .mobile-menu-btn { display: flex !important; }
-        }
-      `}</style>
-    </nav>
+        <div
+          className="menu-link"
+          style={{
+            opacity: isMobileMenuOpen ? 1 : 0,
+            transform: isMobileMenuOpen ? 'translateY(0)' : 'translateY(8px)',
+            transition: `opacity 0.3s ease ${navLinks.length * 0.06}s, transform 0.3s ease ${navLinks.length * 0.06}s`,
+          }}
+        >
+          <ResumeButton />
+        </div>
+      </div>
+    )}
+
+    {/* Responsive rules: swap the desktop bar for the hamburger below 768px */}
+    <style>{`
+      @media (max-width: 768px) {
+        .desktop-nav { display: none !important; }
+        .mobile-menu-btn { display: flex !important; }
+      }
+    `}</style>
+    </>
   )
 }
