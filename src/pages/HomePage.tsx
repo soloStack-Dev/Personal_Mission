@@ -224,7 +224,7 @@ export default function HomePage() {
           {/* Portrait */}
           <div data-hero-image style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <img
-              src="/userImages/Faleel.jpeg"
+              src="/userImages/new-faleel-pic.png"
               alt="Faleel"
               className="hero-portrait"
               style={{

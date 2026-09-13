@@ -47,7 +47,7 @@ export default function AboutPage() {
           {/* Portrait with a monochrome filter (full color on hover) */}
           <div data-hero-image style={{ position: 'relative' }}>
             <img
-              src="/userImages/Faleel.jpeg"
+              src="/userImages/new-faleeltwo.jpeg"
               alt="Workspace"
               className="about-portrait"
               style={{
