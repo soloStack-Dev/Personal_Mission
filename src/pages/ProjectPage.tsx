@@ -74,6 +74,33 @@ const projects = [
     image: '/ProjectThumbnailImage/indian-voice-translater.png',
     link: 'https://translater-app-five.vercel.app/',
   },
+  {
+    title: 'Analytic Agent Bot',
+    category: 'AGENTIC APPLICATION',
+    year: '2026',
+    description: 'An agentic AI application that autonomously researches a topic, analyzes datasets and answers questions with source-grounded reasoning. Designed for intelligent automation workflows where the model plans, gathers and acts on data in production.',
+    image: '/ProjectThumbnailImage/analystic-agent-bot.png',
+    link: 'https://analytic-agent.vercel.app/',
+    github: 'https://github.com/soloStack-Dev/analytic_agent.git',
+  },
+  {
+    title: 'Feedback Management System',
+    category: 'WEB APPLICATION',
+    year: '2026',
+    description: 'A full-stack feedback management platform that collects, organizes and reports on user feedback. Built for real-time interactions with clean data modeling, RESTful APIs and a responsive React interface.',
+    image: '/ProjectThumbnailImage/feedback-management-system.png',
+    link: 'https://feedback-management-teal.vercel.app/',
+    github: 'https://github.com/soloStack-Dev/FeedbackManagement.git',
+  },
+  {
+    title: 'Prompt Maker Agent Bot',
+    category: 'RAG APPLICATION',
+    year: '2026',
+    description: 'A retrieval-augmented generation (RAG) tool that builds precise, context-aware prompts from your documents. It engineers context windows and retrieval pipelines so language models answer with accuracy grounded in your own data.',
+    image: '/ProjectThumbnailImage/prompt-maker-agent-bot.png',
+    link: 'https://prompt-maker-rho.vercel.app/',
+    github: 'https://github.com/soloStack-Dev/Prompt-Maker.git',
+  },
 ]
 
 /**
@@ -207,29 +234,64 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
       </p>
 
       {/* "View case study" link — border lights up on hover */}
-      <a
-        href={project.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--accent-pink)')}
-        onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-hover)')}
-        style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '8px',
-          fontSize: '11px',
-          fontWeight: 600,
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase',
-          color: 'var(--text-primary)',
-          border: '1px solid var(--border-hover)',
-          padding: '8px 16px',
-          textDecoration: 'none',
-          transition: 'border-color 0.2s ease, color 0.2s ease',
-        }}
-      >
-        VIEW CASE STUDY
-      </a>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
+        <a
+          href={project.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--accent-pink)')}
+          onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-hover)')}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '8px',
+            fontSize: '11px',
+            fontWeight: 600,
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-hover)',
+            padding: '8px 16px',
+            textDecoration: 'none',
+            transition: 'border-color 0.2s ease, color 0.2s ease',
+          }}
+        >
+          VIEW CASE STUDY
+        </a>
+
+        {/* GitHub repo link — only rendered when the project has one */}
+        {project.github && (
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            onMouseEnter={(e) => {
+              e.currentTarget.style.borderColor = 'var(--accent-purple)'
+              e.currentTarget.style.color = 'var(--accent-lavender)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.borderColor = 'var(--border-hover)'
+              e.currentTarget.style.color = 'var(--text-primary)'
+            }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              fontSize: '11px',
+              fontWeight: 600,
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              color: 'var(--text-primary)',
+              border: '1px solid var(--border-hover)',
+              padding: '8px 16px',
+              textDecoration: 'none',
+              transition: 'border-color 0.2s ease, color 0.2s ease',
+            }}
+          >
+            <span style={{ fontSize: '13px', lineHeight: 1 }}>⌥</span> GITHUB
+          </a>
+        )}
+      </div>
     </div>
   )
 }
